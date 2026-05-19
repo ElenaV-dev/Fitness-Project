@@ -5,6 +5,9 @@ target/
 .idea/
 *.iml
 
+# Smart Tomcat
+.smarttomcat/
+
 # Eclipse
 .classpath
 .project
