@@ -1,11 +1,11 @@
 package com.fitness.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -17,37 +17,41 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:/application.properties")
+@PropertySource("application.properties")
 public class DatabaseConfig {
 
-    @Value("${db.driver}")
+    @Value("db.driver")
     private String databaseDriver;
 
-    @Value("${db.url}")
+    @Value("db.url")
     private String databaseUrl;
 
-    @Value("${db.username}")
+    @Value("db.username")
     private String databaseUsername;
 
-    @Value("${db.password}")
+    @Value("db.password")
     private String databasePassword;
 
-    @Value("${hibernate.dialect}")
+    @Value("hibernate.dialect")
     private String hibernateDialect;
 
-    @Value("${hibernate.show_sql}")
+    @Value("hibernate.show_sql")
     private String hibernateShowSql;
 
     @Value("${hibernate.hbm2ddl.auto}")
     private String hibernateHbm2DdlAuto;
 
+    @Value("db.pool.size")
+    private int poolSize;
+
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(databaseDriver);
-        dataSource.setUrl(databaseUrl);
+        dataSource.setJdbcUrl(databaseUrl);
         dataSource.setUsername(databaseUsername);
         dataSource.setPassword(databasePassword);
+        dataSource.setMaximumPoolSize(poolSize);
         return dataSource;
     }
 
