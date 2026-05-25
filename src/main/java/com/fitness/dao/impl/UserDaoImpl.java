@@ -1,0 +1,55 @@
+package com.fitness.dao.impl;
+
+import com.fitness.dao.interfaces.UserDao;
+import com.fitness.model.User;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public class UserDaoImpl implements UserDao {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private static final String SELECT_ALL_USERS = "SELECT u FROM User u";
+
+    @Override
+    public Optional<User> findById(Long id) {
+        User user = entityManager.find(User.class, id);
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public List<User> findAll() {
+        TypedQuery<User> query = entityManager.createQuery(SELECT_ALL_USERS, User.class);
+        List<User> users = query.getResultList();
+        return users;
+    }
+
+    @Override
+    public void save(User user) {
+        entityManager.persist(user);
+    }
+
+    @Override
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        User user = entityManager.find(User.class, id);
+
+        if (user != null) {
+            entityManager.remove(user);
+        }
+    }
+}
