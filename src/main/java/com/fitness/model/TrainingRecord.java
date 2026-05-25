@@ -19,14 +19,14 @@ public class TrainingRecord {
 
     @ManyToOne
     @JoinColumn(name = "fitness_service_id", nullable = false)
-    private FitnessService fitnessService;
+    private WorkoutType workoutType;
 
     public TrainingRecord() { }
 
-    public TrainingRecord(Long id, User user, FitnessService fitnessService) {
+    public TrainingRecord(Long id, User user, WorkoutType workoutType) {
         this.id = id;
         this.user = user;
-        this.fitnessService = fitnessService;
+        this.workoutType = workoutType;
     }
 
     public Long getId() {
@@ -45,12 +45,12 @@ public class TrainingRecord {
         this.user = user;
     }
 
-    public FitnessService getFitnessService() {
-        return fitnessService;
+    public WorkoutType getFitnessService() {
+        return workoutType;
     }
 
-    public void setFitnessService(FitnessService fitnessService) {
-        this.fitnessService = fitnessService;
+    public void setFitnessService(WorkoutType workoutType) {
+        this.workoutType = workoutType;
     }
 
     @Override

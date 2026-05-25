@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "fitness_services")
-public class FitnessService {
+@Table(name = "workout_types")
+public class WorkoutType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,12 @@ public class FitnessService {
     @Column(name = "title", nullable = false, length = 100)
     private String title;
 
-    @OneToMany(mappedBy = "fitnessService", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workoutType", cascade = CascadeType.ALL)
     private List<TrainingRecord> trainingRecords;
 
-    public FitnessService() { }
+    public WorkoutType() { }
 
-    public FitnessService(Long id, String title) {
+    public WorkoutType(Long id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -54,7 +54,7 @@ public class FitnessService {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        FitnessService that = (FitnessService) o;
+        WorkoutType that = (WorkoutType) o;
         return Objects.equals(id, that.id) && Objects.equals(title, that.title);
     }
 
