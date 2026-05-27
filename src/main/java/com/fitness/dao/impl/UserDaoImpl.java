@@ -20,6 +20,10 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     private static final String SELECT_ALL_USERS = "SELECT u FROM User u";
+    private static final String SELECT_COUNT_USERS_BY_EMAIL = "SELECT COUNT(u) FROM User u WHERE u.email = :email";
+    private static final String SELECT_COUNT_USER_BY_EMAIL_AND_ID_NOT = "SELECT COUNT(u) FROM User u " +
+            "WHERE u.email = :email AND u.id <> :id";
+    private static final String SELECT_COUNT_USER_BY_ID = "SELECT COUNT(u) FROM User u WHERE u.id = :id";
 
     @Override
     public Optional<User> findById(Long id) {
@@ -51,5 +55,25 @@ public class UserDaoImpl implements UserDao {
         if (user != null) {
             entityManager.remove(user);
         }
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+
+        Long count = entityManager.createQuery(SELECT_COUNT_USERS_BY_EMAIL, Long.class)
+                .setParameter("email", email)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
+    @Override
+    public boolean existsByEmailAndIdNot(String email, Long id) {
+        Long count = entityManager.createQuery(SELECT_COUNT_USER_BY_EMAIL_AND_ID_NOT, Long.class)
+                .setParameter("email", email)
+                .setParameter("id", id)
+                .getSingleResult();
+
+        return count > 0;
     }
 }
