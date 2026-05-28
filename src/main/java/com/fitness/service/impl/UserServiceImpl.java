@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(Long id) {
-
         User user = userDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
@@ -39,41 +38,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponseDto> findAll() {
-
         List<User> users = userDao.findAll();
-
         return userMapper.toResponseDtoList(users);
     }
 
     @Override
     public void save(UserCreateDto dto) {
-
         userValidator.validateCreateDto(dto);
-
         User user = userMapper.createToEntity(dto);
-
         userDao.save(user);
     }
 
     @Override
     public void update(UserUpdateDto dto) {
-
         userValidator.validateUpdateDto(dto);
 
         User user = userDao.findById(dto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + dto.getId()));
 
         userMapper.updateEntity(dto, user);
-
         userDao.update(user);
     }
 
     @Override
     public void deleteById(Long id) {
-
         User user = userDao.findById(id)
                         .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
-        userDao.deleteById(user.getId());
+        userDao.delete(user);
+    }
+
+    @Override
+    public UserUpdateDto findUpdateDtoById(Long id) {
+        User user = userDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+        return userMapper.toUpdateDto(user);
     }
 }

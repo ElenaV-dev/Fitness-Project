@@ -6,4 +6,6 @@ import com.fitness.dto.user_dto.UserUpdateDto;
 import com.fitness.model.User;
 
 public interface UserService extends BaseService<UserResponseDto, UserCreateDto, UserUpdateDto, Long> {
+
+    public UserUpdateDto findUpdateDtoById(Long id);
 }

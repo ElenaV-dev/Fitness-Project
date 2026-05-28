@@ -60,4 +60,15 @@ public class UserMapper {
 
         user.setRole(dto.getRole());
     }
+
+    public UserUpdateDto toUpdateDto(User user) {
+        return new UserUpdateDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                null,
+                user.getRole()
+        );
+    }
 }
