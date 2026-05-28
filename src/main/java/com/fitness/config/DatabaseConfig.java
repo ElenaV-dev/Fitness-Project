@@ -17,31 +17,31 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("application.properties")
+@PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
-    @Value("db.driver")
+    @Value("${db.driver}")
     private String databaseDriver;
 
-    @Value("db.url")
+    @Value("${db.url}")
     private String databaseUrl;
 
-    @Value("db.username")
+    @Value("${db.username}")
     private String databaseUsername;
 
-    @Value("db.password")
+    @Value("${db.password}")
     private String databasePassword;
 
-    @Value("hibernate.dialect")
+    @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
-    @Value("hibernate.show_sql")
+    @Value("${hibernate.show_sql}")
     private String hibernateShowSql;
 
     @Value("${hibernate.hbm2ddl.auto}")
     private String hibernateHbm2DdlAuto;
 
-    @Value("db.pool.size")
+    @Value("${db.pool.size}")
     private int poolSize;
 
     @Bean
