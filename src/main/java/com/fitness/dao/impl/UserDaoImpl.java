@@ -4,12 +4,9 @@ import com.fitness.dao.interfaces.UserDao;
 import com.fitness.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +20,6 @@ public class UserDaoImpl implements UserDao {
     private static final String SELECT_COUNT_USERS_BY_EMAIL = "SELECT COUNT(u) FROM User u WHERE u.email = :email";
     private static final String SELECT_COUNT_USER_BY_EMAIL_AND_ID_NOT = "SELECT COUNT(u) FROM User u " +
             "WHERE u.email = :email AND u.id <> :id";
-    private static final String SELECT_COUNT_USER_BY_ID = "SELECT COUNT(u) FROM User u WHERE u.id = :id";
 
     @Override
     public Optional<User> findById(Long id) {
@@ -49,17 +45,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteById(Long id) {
-        User user = entityManager.find(User.class, id);
-
-        if (user != null) {
-            entityManager.remove(user);
-        }
+    public void delete(User user) {
+        entityManager.remove(user);
     }
 
     @Override
     public boolean existsByEmail(String email) {
-
         Long count = entityManager.createQuery(SELECT_COUNT_USERS_BY_EMAIL, Long.class)
                 .setParameter("email", email)
                 .getSingleResult();
