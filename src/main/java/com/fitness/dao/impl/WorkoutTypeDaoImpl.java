@@ -16,7 +16,11 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String SELECT_ALL_WORKOUT_TYPES = "SELECT f FROM WorkoutType f";
+    private static final String SELECT_ALL_WORKOUT_TYPES = "SELECT w FROM WorkoutType w";
+    private static final String SELECT_COUNT_WORKOUT_TYPE_BY_TITLE = "SELECT COUNT(w) FROM WorkoutType w " +
+            "WHERE w.title = :title";
+    private static final String SELECT_COUNT_WORKOUT_TYPE_BY_TITLE_AND_ID_NOT = "SELECT COUNT(w) FROM WorkoutType w " +
+            "WHERE w.title = :title AND w.id <> :id";
 
     @Override
     public Optional<WorkoutType> findById(Long id) {
@@ -42,11 +46,26 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
     }
 
     @Override
-    public void deleteById(Long id) {
-        WorkoutType workoutType = entityManager.find(WorkoutType.class, id);
-
-        if (workoutType != null) {
+    public void delete(WorkoutType workoutType) {
             entityManager.remove(workoutType);
-        }
+    }
+
+    @Override
+    public boolean existsByTitle(String title) {
+
+        Long count = entityManager.createQuery(SELECT_COUNT_WORKOUT_TYPE_BY_TITLE, Long.class)
+                .setParameter("title", title)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
+    @Override
+    public boolean existsByTitleAndIdNot(String title, Long id) {
+        Long count = entityManager.createQuery(SELECT_COUNT_WORKOUT_TYPE_BY_TITLE_AND_ID_NOT, Long.class)
+                .setParameter("title", title)
+                .setParameter("id", id)
+                .getSingleResult();
+        return count > 0;
     }
 }
