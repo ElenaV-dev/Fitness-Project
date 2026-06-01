@@ -9,6 +9,8 @@ import com.fitness.mapper.UserMapper;
 import com.fitness.model.User;
 import com.fitness.service.interfaces.UserService;
 import com.fitness.validator.UserValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
+    private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
 
     private final UserDao userDao;
     private final UserValidator userValidator;
@@ -47,6 +51,7 @@ public class UserServiceImpl implements UserService {
         userValidator.validateCreateDto(dto);
         User user = userMapper.createToEntity(dto);
         userDao.save(user);
+        LOGGER.info("User created with email {}", user.getEmail());
     }
 
     @Override
@@ -58,6 +63,7 @@ public class UserServiceImpl implements UserService {
 
         userMapper.updateEntity(dto, user);
         userDao.update(user);
+        LOGGER.info("User updated. Id={}", dto.getId());
     }
 
     @Override
@@ -66,6 +72,7 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
         userDao.delete(user);
+        LOGGER.info("User deleted. Id={}", id);
     }
 
     @Override

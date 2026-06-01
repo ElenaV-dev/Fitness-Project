@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public String handleNotFound(EntityNotFoundException ex, Model model) {
-        LOGGER.error("Entity not found", ex);
+        LOGGER.warn("Entity not found: {}", ex.getMessage());
         model.addAttribute("message", ex.getMessage());
         return "errors/404";
     }

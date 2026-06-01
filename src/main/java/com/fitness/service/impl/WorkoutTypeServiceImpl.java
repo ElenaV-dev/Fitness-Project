@@ -9,6 +9,8 @@ import com.fitness.mapper.WorkoutTypeMapper;
 import com.fitness.model.WorkoutType;
 import com.fitness.service.interfaces.WorkoutTypeService;
 import com.fitness.validator.WorkoutTypeValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @Service
 @Transactional
 public class WorkoutTypeServiceImpl implements WorkoutTypeService {
+
+    private static final Logger LOGGER = LogManager.getLogger(WorkoutTypeServiceImpl.class);
 
     private final WorkoutTypeDao workoutTypeDao;
     private final WorkoutTypeValidator workoutTypeValidator;
@@ -47,6 +51,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
         workoutTypeValidator.validateCreateDto(dto);
         WorkoutType workoutType = workoutTypeMapper.createToEntity(dto);
         workoutTypeDao.save(workoutType);
+        LOGGER.info("Workout type created. Title={}", dto.getTitle());
     }
 
     @Override
@@ -58,6 +63,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
         workoutTypeMapper.updateEntity(dto, workoutType);
         workoutTypeDao.update(workoutType);
+        LOGGER.info("Workout type updated. Id={}", dto.getId());
     }
 
     @Override
@@ -66,5 +72,6 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
                 .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
 
         workoutTypeDao.delete(workoutType);
+        LOGGER.info("Workout type deleted. Id={}", id);
     }
 }
