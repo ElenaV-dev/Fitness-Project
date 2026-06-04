@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ваши тренировки</title>
+
+    <link href="https://jsdelivr.net"
+          rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div th:replace="~{fragments/account-header :: account-menu}"></div>
+
+    <ul class="nav nav-tabs mb-4">
+
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'workoutTypes'} ? 'active'"
+               th:href="@{/account/workout-types}">Выбор тренировок</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'trainingRecords'} ? ' active'"
+               th:href="@{/account/training-records}">Ваши тренировки</a>
+        </li>
+
+    </ul>
+
+    <div class="mb-3">
+        <h3>Занятия, на которые вы записаны</h3>
+    </div>
+
+    <table class="table table-bordered table-hover bg-white">
+
+        <thead class="table-dark">
+        <tr>
+            <th>ID Записи</th>
+            <th>Название тренировки</th>
+            <th width="220">Действия</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:if="${#lists.isEmpty(myRecords)}">
+            <td colspan="3" class="text-center text-muted py-4">
+                Вы еще не записались ни на одну тренировку.
+            </td>
+        </tr>
+
+        <tr th:each="record : ${myRecords}">
+
+            <td th:text="${record.id}">1</td>
+
+            <td th:text="${record.workoutTypeTitle}">Йога</td>
+
+            <td>
+
+                <button type="button"
+                        class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#cancelModal"
+                        th:data-url="@{/account/training-records/cancel/{id}(id=${record.id})}">
+                    Отменить запись
+                </button>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Подтверждение отмены</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы точно хотите отменить запись на эту тренировку?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Назад</button>
+
+                <form id="cancelForm" method="post">
+                    <button type="submit" class="btn btn-danger">Да, отменить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const cancelModal = document.getElementById('cancelModal');
+    if (cancelModal) {
+        cancelModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const cancelUrl = button.getAttribute('data-url');
+
+            const form = document.getElementById('cancelForm');
+            form.action = cancelUrl;
+        });
+    }
+</script>
+
+<script src="https://jsdelivr.net"></script>
+
+</body>
+</html>
