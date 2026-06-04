@@ -1,9 +1,11 @@
 package com.fitness.dto.user_dto;
 
+import com.fitness.model.UserRole;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
@@ -28,13 +30,17 @@ public class UserCreateDto {
             message = "the password must contain at least one lowercase letter, one uppercase letter and one number")
     private String password;
 
+    @NotNull(message = "role is required")
+    private UserRole role;
+
     public UserCreateDto() { }
 
-    public UserCreateDto(String firstName, String lastName, String email, String password) {
+    public UserCreateDto(String firstName, String lastName, String email, String password, UserRole role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public String getFirstName() {
@@ -69,15 +75,23 @@ public class UserCreateDto {
         this.password = password;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UserCreateDto that = (UserCreateDto) o;
-        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && role == that.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password);
+        return Objects.hash(firstName, lastName, email, password, role);
     }
 }

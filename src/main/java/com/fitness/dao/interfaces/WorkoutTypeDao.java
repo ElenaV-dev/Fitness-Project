@@ -7,4 +7,5 @@ public interface WorkoutTypeDao extends BaseDao<WorkoutType, Long> {
     boolean existsByTitle(String title);
 
     boolean existsByTitleAndIdNot(String title, Long id);
+
 }

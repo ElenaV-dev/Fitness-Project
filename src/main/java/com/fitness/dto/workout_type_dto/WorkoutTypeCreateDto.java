@@ -1,7 +1,7 @@
 package com.fitness.dto.workout_type_dto;
 
 import jakarta.validation.constraints.Size;
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 

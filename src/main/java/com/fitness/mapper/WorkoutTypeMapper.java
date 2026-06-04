@@ -25,16 +25,19 @@ public class WorkoutTypeMapper {
     }
 
     public WorkoutType createToEntity(WorkoutTypeCreateDto dto) {
-
         WorkoutType workoutType = new WorkoutType();
-
         workoutType.setTitle(dto.getTitle());
-
         return workoutType;
     }
 
     public void updateEntity(WorkoutTypeUpdateDto dto,  WorkoutType workoutType) {
-
         workoutType.setTitle(dto.getTitle());
+    }
+
+    public WorkoutTypeUpdateDto toUpdateDto(WorkoutType workoutType ) {
+        return new WorkoutTypeUpdateDto(
+                workoutType.getId(),
+                workoutType.getTitle()
+        );
     }
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление услуги</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div th:replace="~{fragments/admin-header :: admin-menu}"></div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    <h3>Добавить услугу</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <form th:action="@{/admin/workout-types/create}"
+                          th:object="${workoutType}"
+                          method="post">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Название услуги</label>
+
+                            <input type="text"
+                                   th:field="*{title}"
+                                   class="form-control">
+
+                            <div class="text-danger mt-1"
+                                 th:if="${#fields.hasErrors('title')}"
+                                 th:errors="*{title}">
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+
+                        <a th:href="@{/admin/workout-types}" class="btn btn-secondary">Отмена</a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

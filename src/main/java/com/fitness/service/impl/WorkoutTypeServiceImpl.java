@@ -6,6 +6,7 @@ import com.fitness.dto.workout_type_dto.WorkoutTypeResponseDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeUpdateDto;
 import com.fitness.exception.EntityNotFoundException;
 import com.fitness.mapper.WorkoutTypeMapper;
+import com.fitness.model.User;
 import com.fitness.model.WorkoutType;
 import com.fitness.service.interfaces.WorkoutTypeService;
 import com.fitness.validator.WorkoutTypeValidator;
@@ -73,5 +74,13 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
         workoutTypeDao.delete(workoutType);
         LOGGER.info("Workout type deleted. Id={}", id);
+    }
+
+    @Override
+    public WorkoutTypeUpdateDto findUpdateDtoById(Long id) {
+        WorkoutType workoutType = workoutTypeDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
+
+        return workoutTypeMapper.toUpdateDto(workoutType);
     }
 }

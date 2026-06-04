@@ -29,4 +29,11 @@ public class UserValidator {
         }
     }
 
+    public boolean emailExists(String email) {
+        return userDao.existsByEmail(email);
+    }
+
+    public boolean emailExistsForAnotherUser(String email, Long id) {
+        return userDao.existsByEmailAndIdNot(email, id);
+    }
 }

@@ -28,4 +28,12 @@ public class WorkoutTypeValidator {
             throw new ValidationException("workout type already exists");
         }
     }
+
+    public boolean titleExists(String title) {
+        return workoutTypeDao.existsByTitle(title);
+    }
+
+    public boolean titleExistsForAnotherWorkoutType(String title, Long id) {
+        return workoutTypeDao.existsByTitleAndIdNot(title, id);
+    }
 }
