@@ -1,6 +1,7 @@
 package com.fitness.mapper;
 
 import com.fitness.dto.user_dto.UserCreateDto;
+import com.fitness.dto.user_dto.UserRegisterDto;
 import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.dto.user_dto.UserUpdateDto;
 import com.fitness.model.User;
@@ -43,7 +44,7 @@ public class UserMapper {
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setRole(UserRole.CLIENT);
+        user.setRole(dto.getRole());
 
         return user;
     }
@@ -70,5 +71,18 @@ public class UserMapper {
                 null,
                 user.getRole()
         );
+    }
+
+    public User registerToEntity(UserRegisterDto dto) {
+
+        User user = new User();
+
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setRole(UserRole.CLIENT);
+
+        return user;
     }
 }

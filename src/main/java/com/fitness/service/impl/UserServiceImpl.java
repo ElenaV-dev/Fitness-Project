@@ -2,6 +2,7 @@ package com.fitness.service.impl;
 
 import com.fitness.dao.interfaces.UserDao;
 import com.fitness.dto.user_dto.UserCreateDto;
+import com.fitness.dto.user_dto.UserRegisterDto;
 import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.dto.user_dto.UserUpdateDto;
 import com.fitness.exception.EntityNotFoundException;
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         User user = userDao.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
         userDao.delete(user);
         LOGGER.info("User deleted. Id={}", id);
@@ -81,5 +82,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
         return userMapper.toUpdateDto(user);
+    }
+
+    @Override
+    public void registration(UserRegisterDto dto) {
+        userValidator.validateRegisterDto(dto);
+        User user = userMapper.registerToEntity(dto);
+        userDao.save(user);
+        LOGGER.info("User created with email {}", user.getEmail());
     }
 }
