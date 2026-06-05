@@ -18,7 +18,7 @@ public class TrainingRecord {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "fitness_service_id", nullable = false)
+    @JoinColumn(name = "workout_type_id", nullable = false)
     private WorkoutType workoutType;
 
     public TrainingRecord() { }
@@ -45,11 +45,11 @@ public class TrainingRecord {
         this.user = user;
     }
 
-    public WorkoutType getFitnessService() {
+    public WorkoutType getWorkoutType() {
         return workoutType;
     }
 
-    public void setFitnessService(WorkoutType workoutType) {
+    public void setWorkoutType(WorkoutType workoutType) {
         this.workoutType = workoutType;
     }
 

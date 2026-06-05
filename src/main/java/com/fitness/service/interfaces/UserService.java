@@ -6,9 +6,13 @@ import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.dto.user_dto.UserUpdateDto;
 import com.fitness.model.User;
 
+import java.util.Optional;
+
 public interface UserService extends BaseService<UserResponseDto, UserCreateDto, UserUpdateDto, Long> {
 
     UserUpdateDto findUpdateDtoById(Long id);
 
     void registration(UserRegisterDto dto);
+
+    UserResponseDto findByEmail(String email);
 }

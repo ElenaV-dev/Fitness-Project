@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Ваши тренировки</title>
 
-    <link href="https://jsdelivr.net"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet">
 </head>
 
@@ -26,7 +26,7 @@
 
         <li class="nav-item">
             <a class="nav-link"
-               th:classappend="${activeTab == 'trainingRecords'} ? ' active'"
+               th:classappend="${activeTab == 'trainingRecords'} ? 'active'"
                th:href="@{/account/training-records}">Ваши тренировки</a>
         </li>
 
@@ -48,13 +48,13 @@
 
         <tbody>
 
-        <tr th:if="${#lists.isEmpty(myRecords)}">
+        <tr th:if="${#lists.isEmpty(trainingRecords)}">
             <td colspan="3" class="text-center text-muted py-4">
                 Вы еще не записались ни на одну тренировку.
             </td>
         </tr>
 
-        <tr th:each="record : ${myRecords}">
+        <tr th:each="record : ${trainingRecords}">
 
             <td th:text="${record.id}">1</td>
 
@@ -112,7 +112,7 @@
     }
 </script>
 
-<script src="https://jsdelivr.net"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

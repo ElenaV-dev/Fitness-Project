@@ -91,4 +91,12 @@ public class UserServiceImpl implements UserService {
         userDao.save(user);
         LOGGER.info("User created with email {}", user.getEmail());
     }
+
+    @Override
+    public UserResponseDto findByEmail(String email) {
+        User user = userDao.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
+
+        return userMapper.toResponseDto(user);
+    }
 }
