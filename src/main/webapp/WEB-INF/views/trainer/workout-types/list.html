@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Список тренировок</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div th:replace="~{fragments/trainer-header :: trainer-menu}"></div>
+
+    <ul class="nav nav-tabs mb-4">
+
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'workoutTypes'} ? 'active'"
+               th:href="@{/trainer/workoutTypes}">Выбранные тренировки</a>
+        </li>
+
+    </ul>
+
+    <div class="mb-3">
+        <h3>Занятия, на которые записались клиенты</h3>
+    </div>
+
+    <table class="table table-bordered table-hover bg-white">
+
+        <thead class="table-dark">
+        <tr>
+            <th>ID тренировки</th>
+            <th>Название тренировки</th>
+            <th>Количество человек</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="workoutType : ${workoutTypes}">
+
+            <td th:text="${workoutType.id}">1</td>
+
+            <td th:text="${workoutType.title}">Йога</td>
+
+            <td th:text="${workoutType.countPeople}">4</td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="trainer-menu">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Fitness Trainer</h2>
+
+        <form th:action="@{/logout}" method="post">
+
+            <button type="submit" class="btn btn-outline-dark">Выход</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
