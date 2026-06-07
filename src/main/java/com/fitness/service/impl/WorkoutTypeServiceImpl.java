@@ -1,6 +1,7 @@
 package com.fitness.service.impl;
 
 import com.fitness.dao.interfaces.WorkoutTypeDao;
+import com.fitness.dto.workout_type_dto.TrainerWorkoutTypeDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeCreateDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeResponseDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeUpdateDto;
@@ -82,5 +83,10 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
                 .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
 
         return workoutTypeMapper.toUpdateDto(workoutType);
+    }
+
+    @Override
+    public List<TrainerWorkoutTypeDto> findWorkoutTypesForTrainer() {
+        return workoutTypeDao.findWorkoutTypesWithPeopleCount();
     }
 }

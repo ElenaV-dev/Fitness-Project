@@ -1,6 +1,7 @@
 package com.fitness.dao.impl;
 
 import com.fitness.dao.interfaces.WorkoutTypeDao;
+import com.fitness.dto.workout_type_dto.TrainerWorkoutTypeDto;
 import com.fitness.model.WorkoutType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -21,6 +22,10 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
             "WHERE w.title = :title";
     private static final String SELECT_COUNT_WORKOUT_TYPE_BY_TITLE_AND_ID_NOT = "SELECT COUNT(w) FROM WorkoutType w " +
             "WHERE w.title = :title AND w.id <> :id";
+    private static final String SELECT_WORKOUT_TYPES_WITH_PEOPLE_COUNT = "SELECT new com.fitness.dto.workout_type_dto.TrainerWorkoutTypeDto(" +
+            "wt.id, wt.title, COUNT(tr.id)) FROM WorkoutType wt LEFT JOIN TrainingRecord tr " +
+            "ON tr.workoutType = wt GROUP BY wt.id, wt.title " +
+            "ORDER BY wt.id ASC";
 
     @Override
     public Optional<WorkoutType> findById(Long id) {
@@ -47,7 +52,7 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
 
     @Override
     public void delete(WorkoutType workoutType) {
-            entityManager.remove(workoutType);
+        entityManager.remove(workoutType);
     }
 
     @Override
@@ -66,5 +71,12 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
                 .setParameter("id", id)
                 .getSingleResult();
         return count > 0;
+    }
+
+    @Override
+    public List<TrainerWorkoutTypeDto> findWorkoutTypesWithPeopleCount() {
+        TypedQuery<TrainerWorkoutTypeDto> query = entityManager.createQuery(SELECT_WORKOUT_TYPES_WITH_PEOPLE_COUNT, TrainerWorkoutTypeDto.class);
+        List<TrainerWorkoutTypeDto> trainerWorkoutTypeDtos = query.getResultList();
+        return trainerWorkoutTypeDtos;
     }
 }
