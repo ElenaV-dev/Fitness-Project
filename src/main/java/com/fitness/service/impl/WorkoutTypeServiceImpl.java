@@ -7,7 +7,6 @@ import com.fitness.dto.workout_type_dto.WorkoutTypeResponseDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeUpdateDto;
 import com.fitness.exception.EntityNotFoundException;
 import com.fitness.mapper.WorkoutTypeMapper;
-import com.fitness.model.User;
 import com.fitness.model.WorkoutType;
 import com.fitness.service.interfaces.WorkoutTypeService;
 import com.fitness.validator.WorkoutTypeValidator;

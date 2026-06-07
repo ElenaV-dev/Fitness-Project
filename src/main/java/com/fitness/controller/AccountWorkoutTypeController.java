@@ -22,7 +22,4 @@ public class AccountWorkoutTypeController {
         model.addAttribute("activeTab", "workoutTypes");
         return "account/workout-types/list";
     }
-
-
-
 }
