@@ -30,13 +30,32 @@
                th:href="@{/account/training-records}">Ваши тренировки</a>
         </li>
 
+        <li class="nav-item">
+
+            <a class="nav-link"
+               th:classappend="${activeTab == 'subscriptions'} ? 'active'"
+               th:href="@{/account/subscription}">Абонемент</a>
+
+        </li>
+
     </ul>
 
     <div class="mb-3">
         <h3>Занятия, на которые вы записаны</h3>
     </div>
 
-    <table class="table table-bordered table-hover bg-white">
+    <div th:if="${!hasSubscription}"
+         class="alert alert-warning">
+
+        Для просмотра и записи на тренировки необходимо приобрести абонемент.
+
+        <a th:href="@{/account/subscription}"
+           class="alert-link">Перейти к покупке</a>
+
+    </div>
+
+    <table th:if="${hasSubscription}"
+           class="table table-bordered table-hover bg-white">
 
         <thead class="table-dark">
         <tr>

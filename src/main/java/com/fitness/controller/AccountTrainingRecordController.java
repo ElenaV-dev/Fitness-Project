@@ -4,8 +4,6 @@ import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.exception.ValidationException;
 import com.fitness.service.interfaces.TrainingRecordService;
 import com.fitness.service.interfaces.UserService;
-import com.fitness.service.interfaces.WorkoutTypeService;
-import com.fitness.validator.TrainingRecordValidator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +33,7 @@ public class AccountTrainingRecordController {
 
         UserResponseDto user = userService.findByEmail(email);
         model.addAttribute("trainingRecords", trainingRecordService.findAllRecordsForUser(user.getId()));
+        model.addAttribute("hasSubscription", false);
         model.addAttribute("activeTab", "trainingRecords");
         return "account/training-records/list";
     }

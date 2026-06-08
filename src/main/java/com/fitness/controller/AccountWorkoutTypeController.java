@@ -19,6 +19,7 @@ public class AccountWorkoutTypeController {
     @GetMapping
     public String adminPage(Model model) {
         model.addAttribute("workoutTypes", workoutTypeService.findAll());
+        model.addAttribute("hasSubscription", false);
         model.addAttribute("activeTab", "workoutTypes");
         return "account/workout-types/list";
     }

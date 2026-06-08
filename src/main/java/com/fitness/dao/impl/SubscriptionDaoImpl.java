@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,8 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     private EntityManager entityManager;
 
     private static final String SELECT_ALL_SUBSCRIPTIONS = "SELECT s FROM Subscription s";
+    private static final String SELECT_ACTIVE_SUBSCRIPTION_COUNT = "SELECT COUNT(s) FROM Subscription s " +
+                    "WHERE s.user.id = :userId AND s.paid = true AND s.endDate >= :today";
 
     @Override
     public Optional<Subscription> findById(Long id) {
@@ -42,11 +45,17 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     }
 
     @Override
-    public void deleteById(Long id) {
-        Subscription subscription = entityManager.find(Subscription.class, id);
+    public void delete(Subscription subscription) {
+        entityManager.remove(subscription);
+    }
 
-        if (subscription != null) {
-            entityManager.remove(subscription);
-        }
+    @Override
+    public boolean hasActiveSubscription(Long userId) {
+        Long count = entityManager.createQuery(SELECT_ACTIVE_SUBSCRIPTION_COUNT, Long.class)
+                .setParameter("userId", userId)
+                .setParameter("today", LocalDate.now())
+                .getSingleResult();
+
+        return count > 0;
     }
 }
