@@ -93,11 +93,11 @@ public class Subscription {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Subscription that = (Subscription) o;
-        return paid == that.paid && Objects.equals(user, that.user) && Objects.equals(subscriptionNumber, that.subscriptionNumber) && type == that.type && Objects.equals(endDate, that.endDate);
+        return Objects.equals(subscriptionNumber, that.subscriptionNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, subscriptionNumber, paid, type, endDate);
+        return Objects.hashCode(subscriptionNumber);
     }
 }

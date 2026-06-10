@@ -5,4 +5,6 @@ import com.fitness.model.Subscription;
 public interface SubscriptionDao extends BaseDao<Subscription, Long> {
 
     boolean hasActiveSubscription(Long userId);
+
+    boolean existsBySubscriptionNumber(String number);
 }
