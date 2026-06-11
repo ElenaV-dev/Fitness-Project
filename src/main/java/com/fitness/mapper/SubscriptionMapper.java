@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class SubscriptionMapper {
 
     public SubscriptionResponseDto toResponseDto(Subscription subscription) {
-
         return new SubscriptionResponseDto(
                 subscription.getSubscriptionNumber(),
                 subscription.getType(),

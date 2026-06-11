@@ -44,6 +44,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         Subscription subscription = subscriptionDao.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Subscription not found with user id: " + userId));
+
         return subscriptionMapper.toResponseDto(subscription);
     }
 
@@ -54,12 +55,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void save(SubscriptionCreateDto dto) {
-
     }
 
     @Override
     public void update(SubscriptionUpdateDto dto) {
-
     }
 
     @Override
@@ -93,7 +92,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     private LocalDate calculateEndDate(SubscriptionType type) {
-
         return switch (type) {
 
             case MONTH -> LocalDate.now().plusMonths(1);
@@ -106,7 +104,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public boolean hasActiveSubscription(Long userId) {
-
         return subscriptionDao.hasActiveSubscription(userId);
     }
 }

@@ -14,7 +14,6 @@ public class SubscriptionValidator {
     }
 
     public void validateNoActiveSubscription(Long userId) {
-
         if (subscriptionDao.hasActiveSubscription(userId)) {
             throw new ValidationException("Active subscription already exists");
         }

@@ -46,37 +46,48 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
+
         HikariDataSource dataSource = new HikariDataSource();
+
         dataSource.setDriverClassName(databaseDriver);
         dataSource.setJdbcUrl(databaseUrl);
         dataSource.setUsername(databaseUsername);
         dataSource.setPassword(databasePassword);
         dataSource.setMaximumPoolSize(poolSize);
+
         return dataSource;
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+
         entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setPackagesToScan("com.fitness.model");
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactory.setJpaProperties(getHibernateProperties());
+
         return entityManagerFactory;
     }
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+
         JpaTransactionManager manager = new JpaTransactionManager();
+
         manager.setEntityManagerFactory(entityManagerFactory);
         return manager;
     }
 
     private Properties getHibernateProperties() {
+
         Properties properties = new Properties();
+
         properties.setProperty("hibernate.dialect", hibernateDialect);
         properties.setProperty("hibernate.show_sql", hibernateShowSql);
         properties.setProperty("hibernate.hbm2ddl.auto", hibernateHbm2DdlAuto);
+
         return properties;
     }
 }

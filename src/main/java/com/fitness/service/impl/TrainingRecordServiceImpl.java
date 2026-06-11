@@ -6,7 +6,6 @@ import com.fitness.dao.interfaces.WorkoutTypeDao;
 import com.fitness.dto.training_record_dto.TrainingRecordCreateDto;
 import com.fitness.dto.training_record_dto.TrainingRecordResponseDto;
 import com.fitness.dto.training_record_dto.TrainingRecordUpdateDto;
-import com.fitness.dto.workout_type_dto.WorkoutTypeResponseDto;
 import com.fitness.exception.EntityNotFoundException;
 import com.fitness.mapper.TrainingRecordMapper;
 import com.fitness.mapper.WorkoutTypeMapper;
@@ -56,16 +55,15 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
 
     @Override
     public void save(TrainingRecordCreateDto dto) {
-
     }
 
     @Override
     public void update(TrainingRecordUpdateDto dto) {
-
     }
 
     @Override
     public void deleteById(Long id) {
+
         TrainingRecord trainingRecord = trainingRecordDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Training record not found with id: " + id));
 
@@ -75,6 +73,7 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
 
     @Override
     public void bookWorkout(Long userId, Long workoutTypeId) {
+
         User user = userDao.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
@@ -84,6 +83,8 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
         trainingRecordValidator.validateCreateRecord(user, workoutType);
         TrainingRecord record = trainingRecordMapper.createToEntity(user, workoutType);
         trainingRecordDao.save(record);
+        LOGGER.info("Workout booked. UserId={}, WorkoutTypeId={}, WorkoutTitle={}",
+                userId, workoutTypeId, workoutType.getTitle());
     }
 
     @Override

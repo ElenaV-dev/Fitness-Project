@@ -1,6 +1,5 @@
 package com.fitness.config;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
@@ -30,7 +29,6 @@ public class ThymeleafConfig {
         SpringTemplateEngine engine = new SpringTemplateEngine();
 
         engine.setTemplateResolver(templateResolver());
-
         return engine;
     }
 

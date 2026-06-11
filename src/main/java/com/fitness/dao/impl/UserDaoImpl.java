@@ -52,6 +52,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean existsByEmail(String email) {
+
         Long count = entityManager.createQuery(SELECT_COUNT_USERS_BY_EMAIL, Long.class)
                 .setParameter("email", email)
                 .getSingleResult();
@@ -61,6 +62,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean existsByEmailAndIdNot(String email, Long id) {
+
         Long count = entityManager.createQuery(SELECT_COUNT_USER_BY_EMAIL_AND_ID_NOT, Long.class)
                 .setParameter("email", email)
                 .setParameter("id", id)
@@ -71,9 +73,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
+
         List<User> users = entityManager.createQuery(SELECT_USER_BY_EMAIL, User.class)
                 .setParameter("email", email)
                 .getResultList();
+
         return users.stream().findFirst();
     }
 }

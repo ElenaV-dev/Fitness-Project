@@ -57,6 +57,7 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
 
     @Override
     public boolean existsByTitle(String title) {
+
         Long count = entityManager.createQuery(SELECT_COUNT_WORKOUT_TYPE_BY_TITLE, Long.class)
                 .setParameter("title", title)
                 .getSingleResult();
@@ -66,10 +67,12 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
 
     @Override
     public boolean existsByTitleAndIdNot(String title, Long id) {
+
         Long count = entityManager.createQuery(SELECT_COUNT_WORKOUT_TYPE_BY_TITLE_AND_ID_NOT, Long.class)
                 .setParameter("title", title)
                 .setParameter("id", id)
                 .getSingleResult();
+
         return count > 0;
     }
 

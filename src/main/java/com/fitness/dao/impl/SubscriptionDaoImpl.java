@@ -25,14 +25,12 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
     @Override
     public Optional<Subscription> findById(Long id) {
-
         Subscription subscription = entityManager.find(Subscription.class, id);
         return Optional.ofNullable(subscription);
     }
 
     @Override
     public List<Subscription> findAll() {
-
         TypedQuery<Subscription> query = entityManager.createQuery(SELECT_ALL_SUBSCRIPTIONS, Subscription.class);
         List<Subscription> subscriptions = query.getResultList();
         return subscriptions;

@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(Long id) {
+
         User user = userDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
@@ -57,6 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(UserUpdateDto dto) {
+
         userValidator.validateUpdateDto(dto);
 
         User user = userDao.findById(dto.getId())
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(Long id) {
+
         User user = userDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
@@ -78,6 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserUpdateDto findUpdateDtoById(Long id) {
+
         User user = userDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
@@ -94,6 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findByEmail(String email) {
+
         User user = userDao.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
 

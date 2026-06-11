@@ -32,6 +32,7 @@ public class AccountTrainingRecordController {
 
         UserResponseDto user = currentUserService.getCurrentUser();
         boolean hasSubscription = subscriptionService.hasActiveSubscription(user.getId());
+
         model.addAttribute("hasSubscription", subscriptionService.hasActiveSubscription(user.getId()));
 
         if (hasSubscription) {
@@ -64,9 +65,7 @@ public class AccountTrainingRecordController {
 
     @PostMapping("/cancel/{id}")
     public String cancelById(@PathVariable("id") Long id) {
-
         trainingRecordService.deleteById(id);
-
         return "redirect:/account/training-records";
     }
 }

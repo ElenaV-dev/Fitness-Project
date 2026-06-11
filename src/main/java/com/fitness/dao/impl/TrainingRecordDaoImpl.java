@@ -2,7 +2,6 @@ package com.fitness.dao.impl;
 
 import com.fitness.dao.interfaces.TrainingRecordDao;
 import com.fitness.model.TrainingRecord;
-import com.fitness.model.WorkoutType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -53,6 +52,7 @@ public class TrainingRecordDaoImpl implements TrainingRecordDao {
 
     @Override
     public boolean existsByUserIdAndWorkoutTypeId(Long userId, Long workoutTypeId) {
+
         Long count = entityManager.createQuery(SELECT_COUNT_TRAINING_RECORDS_BY_USER_ID_AND_WORKOUT_TYPE_ID, Long.class)
                 .setParameter("userId", userId)
                 .setParameter("workoutTypeId", workoutTypeId)

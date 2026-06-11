@@ -14,6 +14,7 @@ public class WebInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 
         context.register(WebConfig.class,
@@ -22,7 +23,6 @@ public class WebInitializer implements WebApplicationInitializer {
                 ThymeleafConfig.class);
 
         servletContext.addListener(new ContextLoaderListener(context));
-
         ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER, new DispatcherServlet(context));
         servlet.addMapping("/");
         servlet.setLoadOnStartup(1);

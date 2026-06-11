@@ -35,6 +35,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public WorkoutTypeResponseDto findById(Long id) {
+
         WorkoutType workoutType = workoutTypeDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
 
@@ -57,6 +58,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public void update(WorkoutTypeUpdateDto dto) {
+
         workoutTypeValidator.validateUpdateDto(dto);
 
         WorkoutType workoutType = workoutTypeDao.findById(dto.getId())
@@ -69,6 +71,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public void deleteById(Long id) {
+
         WorkoutType workoutType = workoutTypeDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
 
@@ -78,6 +81,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public WorkoutTypeUpdateDto findUpdateDtoById(Long id) {
+
         WorkoutType workoutType = workoutTypeDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
 

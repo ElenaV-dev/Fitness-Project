@@ -42,11 +42,7 @@ public class PayCardDaoImpl implements PayCardDao {
     }
 
     @Override
-    public void deleteById(Long id) {
-        PayCard payCard = entityManager.find(PayCard.class, id);
-
-        if (payCard != null) {
-            entityManager.remove(payCard);
-        }
+    public void delete(PayCard payCard) {
+        entityManager.remove(payCard);
     }
 }

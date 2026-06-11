@@ -17,14 +17,12 @@ public class UserValidator {
     }
 
     public void validateCreateDto(UserCreateDto dto) {
-
         if (userDao.existsByEmail(dto.getEmail())) {
             throw new ValidationException("user with this email already exists");
         }
     }
 
     public void validateUpdateDto(UserUpdateDto dto) {
-
         if (userDao.existsByEmailAndIdNot(dto.getEmail(), dto.getId())) {
             throw new ValidationException("email already exists");
         }
@@ -39,7 +37,6 @@ public class UserValidator {
     }
 
     public void validateRegisterDto(UserRegisterDto dto) {
-
         if (userDao.existsByEmail(dto.getEmail())) {
             throw new ValidationException("user with this email already exists");
         }

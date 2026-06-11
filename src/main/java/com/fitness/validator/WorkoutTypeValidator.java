@@ -16,14 +16,12 @@ public class WorkoutTypeValidator {
     }
 
     public void validateCreateDto(WorkoutTypeCreateDto dto) {
-
         if (workoutTypeDao.existsByTitle(dto.getTitle())) {
             throw new ValidationException("workout type already exists");
         }
     }
 
     public void validateUpdateDto(WorkoutTypeUpdateDto dto) {
-
         if (workoutTypeDao.existsByTitleAndIdNot(dto.getTitle(), dto.getId())) {
             throw new ValidationException("workout type already exists");
         }
