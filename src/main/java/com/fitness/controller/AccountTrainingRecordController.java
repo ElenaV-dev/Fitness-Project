@@ -5,6 +5,8 @@ import com.fitness.exception.ValidationException;
 import com.fitness.service.impl.CurrentUserService;
 import com.fitness.service.interfaces.SubscriptionService;
 import com.fitness.service.interfaces.TrainingRecordService;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Locale;
+
 @Controller
 @RequestMapping("/account/training-records")
 public class AccountTrainingRecordController {
@@ -20,11 +24,13 @@ public class AccountTrainingRecordController {
     private final CurrentUserService currentUserService;
     private final TrainingRecordService trainingRecordService;
     private final SubscriptionService subscriptionService;
+    private final MessageSource messageSource;
 
-    public AccountTrainingRecordController(CurrentUserService currentUserService, TrainingRecordService trainingRecordService, SubscriptionService subscriptionService) {
+    public AccountTrainingRecordController(CurrentUserService currentUserService, TrainingRecordService trainingRecordService, SubscriptionService subscriptionService, MessageSource messageSource) {
         this.currentUserService = currentUserService;
         this.trainingRecordService = trainingRecordService;
         this.subscriptionService = subscriptionService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping
@@ -49,16 +55,15 @@ public class AccountTrainingRecordController {
     public String bookWorkout(@PathVariable("workoutTypeId") Long workoutTypeId, RedirectAttributes redirectAttributes) {
 
         UserResponseDto user = currentUserService.getCurrentUser();
+        Locale locale = LocaleContextHolder.getLocale();
 
         try {
             trainingRecordService.bookWorkout(user.getId(), workoutTypeId);
-            redirectAttributes.addFlashAttribute(
-                    "successMessage",
-                    "Вы успешно записались на тренировку");
+            String successMsg = messageSource.getMessage("account.booking.success", null, locale);
+            redirectAttributes.addFlashAttribute("successMessage", successMsg);
         } catch (ValidationException e) {
-            redirectAttributes.addFlashAttribute(
-                    "errorMessage",
-                    "Вы уже записаны на это занятие");
+            String errorMsg = messageSource.getMessage("account.booking.already-booked", null, locale);
+            redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
         }
         return "redirect:/account/workout-types";
     }

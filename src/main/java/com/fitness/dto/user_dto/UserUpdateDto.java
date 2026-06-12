@@ -11,28 +11,28 @@ import java.util.Objects;
 
 public class UserUpdateDto {
 
-    @NotNull(message = "id is required")
+    @NotNull(message = "{user.id.required}")
     private Long id;
 
-    @NotBlank(message = "first name is required")
-    @Size(max = 50, message = "first name must not exceed 50 characters")
+    @NotBlank(message = "{user.firstname.required}")
+    @Size(max = 50, message = "{user.firstname.size}")
     private String firstName;
 
-    @NotBlank(message = "last name is required")
-    @Size(max = 50, message = "last name must not exceed 50 characters")
+    @NotBlank(message = "{user.lastname.required}")
+    @Size(max = 50, message = "{user.lastname.size}")
     private String lastName;
 
-    @NotBlank(message = "email is required")
-    @Email(message = "Email should be valid")
-    @Size(max = 100, message = "email must not exceed 100 characters")
+    @NotBlank(message = "{user.email.required}")
+    @Email(message = "{user.email.valid}")
+    @Size(max = 100, message = "{user.email.size}")
     private String email;
 
-    @Size(min = 8, message = "password must be at least 8 characters")
+    @Size(min = 8, message = "{user.password.size}")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
-            message = "the password must contain at least one lowercase letter, one uppercase letter and one number")
+            message = "{user.password.pattern}")
     private String password;
 
-    @NotNull(message = "role is required")
+    @NotNull(message = "{user.role.required}")
     private UserRole role;
 
     public UserUpdateDto() { }

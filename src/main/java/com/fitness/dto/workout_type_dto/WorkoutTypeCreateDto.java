@@ -7,8 +7,8 @@ import java.util.Objects;
 
 public class WorkoutTypeCreateDto {
 
-    @NotBlank(message = "title is required")
-    @Size(max = 100, message = "title must not exceed 100 characters")
+    @NotBlank(message = "{workout.title.required}")
+    @Size(max = 100, message = "{workout.title.size}")
     private String title;
 
     public WorkoutTypeCreateDto() { }

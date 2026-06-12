@@ -5,10 +5,14 @@ import com.fitness.exception.ValidationException;
 import com.fitness.model.SubscriptionType;
 import com.fitness.service.impl.CurrentUserService;
 import com.fitness.service.interfaces.SubscriptionService;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/account/subscription")
@@ -16,10 +20,12 @@ public class AccountSubscriptionController {
 
     private final CurrentUserService currentUserService;
     private final SubscriptionService subscriptionService;
+    private final MessageSource messageSource;
 
-    public AccountSubscriptionController(CurrentUserService currentUserService, SubscriptionService subscriptionService) {
+    public AccountSubscriptionController(CurrentUserService currentUserService, SubscriptionService subscriptionService, MessageSource messageSource) {
         this.currentUserService = currentUserService;
         this.subscriptionService = subscriptionService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping
@@ -43,12 +49,15 @@ public class AccountSubscriptionController {
     public String buySubscription(@RequestParam("type") SubscriptionType type, RedirectAttributes redirectAttributes) {
 
         UserResponseDto user = currentUserService.getCurrentUser();
+        Locale locale = LocaleContextHolder.getLocale();
 
         try {
             subscriptionService.buySubscription(user.getId(), type);
-            redirectAttributes.addFlashAttribute("successMessage", "Абонемент успешно приобретен");
+            String successMsg = messageSource.getMessage("account.subscription.buy.success", null, locale);
+            redirectAttributes.addFlashAttribute("successMessage", successMsg);
         } catch (ValidationException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            String errorMsg = messageSource.getMessage("account.subscription.buy.error-exists", null, locale);
+            redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
         }
         return "redirect:/account/subscription";
     }

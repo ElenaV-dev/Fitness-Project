@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <title>Администрирование</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <title th:text="#{admin.page-title}">Администрирование</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -17,89 +14,62 @@
     <div th:replace="~{fragments/admin-header :: admin-menu}"></div>
 
     <ul class="nav nav-tabs mb-4">
-
         <li class="nav-item">
-
             <a class="nav-link"
                th:classappend="${activeTab == 'workouts'} ? ' active'"
-               th:href="@{/admin/workout-types}">
-
-                Услуги
-
-            </a>
-
+               th:href="@{/admin/workout-types}"
+               th:text="#{admin.tab.services}">Услуги</a>
         </li>
-
         <li class="nav-item">
-
             <a class="nav-link"
                th:classappend="${activeTab == 'users'} ? ' active'"
-               th:href="@{/admin/users}">
-
-                Пользователи
-
-            </a>
-
+               th:href="@{/admin/users}"
+               th:text="#{admin.tab.users}">Пользователи</a>
         </li>
-
     </ul>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-
-        <h3>Пользователи</h3>
-
-        <a th:href="@{/admin/users/create}" class="btn btn-success">Добавить пользователя</a>
-
+        <h3 th:text="#{admin.users.header}">Пользователи</h3>
+        <a th:href="@{/admin/users/create}" class="btn btn-success" th:text="#{admin.users.btn-add}">Добавить пользователя</a>
     </div>
 
     <table class="table table-bordered table-hover bg-white">
-
         <thead class="table-dark">
-
         <tr>
-            <th>ID</th>
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Email</th>
-            <th>Роль</th>
-            <th width="220">Действия</th>
+            <th th:text="#{admin.table.id}">ID</th>
+            <th th:text="#{admin.users.table.firstname}">Имя</th>
+            <th th:text="#{admin.users.table.lastname}">Фамилия</th>
+            <th th:text="#{admin.users.table.email}">Email</th>
+            <th th:text="#{admin.users.table.role}">Роль</th>
+            <th width="220" th:text="#{admin.table.actions}">Действия</th>
         </tr>
-
         </thead>
-
         <tbody>
-
         <tr th:each="user : ${users}">
-
             <td th:text="${user.id}">1</td>
-
             <td th:text="${user.firstName}">Иван</td>
-
             <td th:text="${user.lastName}">Иванов</td>
-
             <td th:text="${user.email}">ivanov@mail.com</td>
 
-            <td th:text="${user.role}">админ</td>
+            <td th:text="${user.role.name() == 'ADMIN' or user.role == 'admin'} ? #{role.admin} :
+                       (${user.role.name() == 'TRAINER' or user.role == 'trainer'} ? #{role.trainer} : #{role.client})">клиент</td>
 
             <td>
-
                 <a th:href="@{/admin/users/edit/{id}(id=${user.id})}"
-                   class="btn btn-primary btn-sm">Изменить</a>
+                   class="btn btn-primary btn-sm"
+                   th:text="#{admin.btn.edit}">Изменить</a>
 
                 <button type="button"
                         class="btn btn-danger btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
-                        th:data-url="@{/admin/users/delete/{id}(id=${user.id})}">
+                        th:data-url="@{/admin/users/delete/{id}(id=${user.id})}"
+                        th:text="#{admin.btn.delete}">
                     Удалить
                 </button>
-
             </td>
-
         </tr>
-
         </tbody>
-
     </table>
 
 </div>
@@ -108,18 +78,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+                <h5 class="modal-title" id="deleteModalLabel" th:text="#{admin.modal.title}">Подтверждение удаления</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" th:text="#{admin.users.modal.body}">
                 Вы точно хотите удалить этого пользователя? Данное действие нельзя отменить.
             </div>
             <div class="modal-footer">
-
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{admin.modal.btn-cancel}">Отмена</button>
                 <form id="deleteForm" method="post">
-                    <button type="submit" class="btn btn-danger">Да, удалить</button>
+                    <button type="submit" class="btn btn-danger" th:text="#{admin.modal.btn-confirm}">Да, удалить</button>
                 </form>
             </div>
         </div>
@@ -130,11 +98,8 @@
     const deleteModal = document.getElementById('deleteModal');
     if (deleteModal) {
         deleteModal.addEventListener('show.bs.modal', function (event) {
-
             const button = event.relatedTarget;
-
             const deleteUrl = button.getAttribute('data-url');
-
             const form = document.getElementById('deleteForm');
             form.action = deleteUrl;
         });
@@ -142,6 +107,5 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
