@@ -1,5 +1,6 @@
 package com.fitness.service.impl;
 
+import com.fitness.constants.ErrorConstants;
 import com.fitness.dao.interfaces.TrainingRecordDao;
 import com.fitness.dao.interfaces.UserDao;
 import com.fitness.dao.interfaces.WorkoutTypeDao;
@@ -44,7 +45,7 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
     }
 
     @Override
-    public TrainingRecordResponseDto findById(Long aLong) {
+    public TrainingRecordResponseDto findById(Long id) {
         return null;
     }
 
@@ -65,7 +66,7 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
     public void deleteById(Long id) {
 
         TrainingRecord trainingRecord = trainingRecordDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Training record not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.TRAINING_RECORD_NOT_FOUND_BY_ID + id));
 
         trainingRecordDao.delete(trainingRecord);
         LOGGER.info("Training record deleted. Id={}", id);
@@ -75,10 +76,10 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
     public void bookWorkout(Long userId, Long workoutTypeId) {
 
         User user = userDao.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.USER_NOT_FOUND_BY_ID + userId));
 
         WorkoutType workoutType = workoutTypeDao.findById(workoutTypeId)
-                .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + workoutTypeId));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.WORKOUT_TYPE_NOT_FOUND_BY_ID + workoutTypeId));
 
         trainingRecordValidator.validateCreateRecord(user, workoutType);
         TrainingRecord record = trainingRecordMapper.createToEntity(user, workoutType);
@@ -92,5 +93,4 @@ public class TrainingRecordServiceImpl implements TrainingRecordService {
         List<TrainingRecord> trainingRecords = trainingRecordDao.findAllForUserId(userId);
         return trainingRecordMapper.toResponseDtoList(trainingRecords);
     }
-
 }

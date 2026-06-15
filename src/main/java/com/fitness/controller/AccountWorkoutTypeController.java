@@ -1,5 +1,8 @@
 package com.fitness.controller;
 
+import com.fitness.constants.PageNameConstants;
+import com.fitness.constants.Tabs;
+import com.fitness.constants.ViewConstants;
 import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.service.impl.CurrentUserService;
 import com.fitness.service.interfaces.SubscriptionService;
@@ -28,10 +31,10 @@ public class AccountWorkoutTypeController {
 
         UserResponseDto user = currentUserService.getCurrentUser();
 
-        model.addAttribute("workoutTypes", workoutTypeService.findAll());
-        model.addAttribute("hasSubscription", subscriptionService.hasActiveSubscription(user.getId()));
-        model.addAttribute("activeTab", "workoutTypes");
+        model.addAttribute(ViewConstants.WORKOUT_TYPES, workoutTypeService.findAll());
+        model.addAttribute(ViewConstants.HAS_SUBSCRIPTION, subscriptionService.hasActiveSubscription(user.getId()));
+        model.addAttribute(ViewConstants.ACTIVE_TAB, Tabs.WORKOUT_TYPES);
 
-        return "account/workout-types/list";
+        return PageNameConstants.ACCOUNT_WORKOUT_TYPES_LIST;
     }
 }

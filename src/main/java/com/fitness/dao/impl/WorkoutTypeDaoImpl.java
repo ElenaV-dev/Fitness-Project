@@ -1,5 +1,6 @@
 package com.fitness.dao.impl;
 
+import com.fitness.constants.QueryParamConstants;
 import com.fitness.dao.interfaces.WorkoutTypeDao;
 import com.fitness.dto.workout_type_dto.TrainerWorkoutTypeDto;
 import com.fitness.model.WorkoutType;
@@ -59,7 +60,7 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
     public boolean existsByTitle(String title) {
 
         Long count = entityManager.createQuery(SELECT_COUNT_WORKOUT_TYPE_BY_TITLE, Long.class)
-                .setParameter("title", title)
+                .setParameter(QueryParamConstants.TITLE, title)
                 .getSingleResult();
 
         return count > 0;
@@ -69,8 +70,8 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
     public boolean existsByTitleAndIdNot(String title, Long id) {
 
         Long count = entityManager.createQuery(SELECT_COUNT_WORKOUT_TYPE_BY_TITLE_AND_ID_NOT, Long.class)
-                .setParameter("title", title)
-                .setParameter("id", id)
+                .setParameter(QueryParamConstants.TITLE, title)
+                .setParameter(QueryParamConstants.ID, id)
                 .getSingleResult();
 
         return count > 0;

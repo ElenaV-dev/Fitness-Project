@@ -1,5 +1,6 @@
 package com.fitness.controller;
 
+import com.fitness.constants.*;
 import com.fitness.dto.user_dto.UserCreateDto;
 import com.fitness.dto.user_dto.UserRegisterDto;
 import com.fitness.service.interfaces.UserService;
@@ -38,13 +39,13 @@ public class AuthorizationController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login";
+        return PageNameConstants.LOGIN;
     }
 
     @GetMapping("/registration")
     public String getRegistrationPage(Model model) {
-        model.addAttribute("user", new UserCreateDto());
-        return "registration";
+        model.addAttribute(ViewConstants.USER, new UserCreateDto());
+        return PageNameConstants.REGISTRATION;
     }
 
     @PostMapping("/registration")
@@ -53,13 +54,12 @@ public class AuthorizationController {
 
         if (userValidator.emailExists(dto.getEmail())) {
             bindingResult.rejectValue(
-                    "email",
-                    "email.exists",
-                    "User with this email already exists");
+                    FieldConstants.EMAIL,
+                    ValidationConstants.EMAIL_EXISTS);
         }
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return PageNameConstants.REGISTRATION;
         }
         userService.registration(dto);
 
@@ -71,11 +71,12 @@ public class AuthorizationController {
                 userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         request.getSession(true)
                 .setAttribute(
                         HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                         SecurityContextHolder.getContext());
 
-        return "redirect:/account/workout-types";
+        return UriConstants.REDIRECT_ACCOUNT_WORKOUT_TYPES;
     }
 }

@@ -1,5 +1,6 @@
 package com.fitness.dao.impl;
 
+import com.fitness.constants.QueryParamConstants;
 import com.fitness.dao.interfaces.TrainingRecordDao;
 import com.fitness.model.TrainingRecord;
 import jakarta.persistence.EntityManager;
@@ -54,8 +55,8 @@ public class TrainingRecordDaoImpl implements TrainingRecordDao {
     public boolean existsByUserIdAndWorkoutTypeId(Long userId, Long workoutTypeId) {
 
         Long count = entityManager.createQuery(SELECT_COUNT_TRAINING_RECORDS_BY_USER_ID_AND_WORKOUT_TYPE_ID, Long.class)
-                .setParameter("userId", userId)
-                .setParameter("workoutTypeId", workoutTypeId)
+                .setParameter(QueryParamConstants.USER_ID, userId)
+                .setParameter(QueryParamConstants.WORKOUT_TYPE_ID, workoutTypeId)
                 .getSingleResult();
 
         return count > 0;
@@ -64,7 +65,7 @@ public class TrainingRecordDaoImpl implements TrainingRecordDao {
     @Override
     public List<TrainingRecord> findAllForUserId(Long userId) {
         return entityManager.createQuery(SELECT_ALL_RECORDS_FOR_USER, TrainingRecord.class)
-                .setParameter("userId", userId)
+                .setParameter(QueryParamConstants.USER_ID, userId)
                 .getResultList();
     }
 }

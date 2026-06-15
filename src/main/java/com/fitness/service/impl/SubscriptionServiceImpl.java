@@ -1,5 +1,6 @@
 package com.fitness.service.impl;
 
+import com.fitness.constants.ErrorConstants;
 import com.fitness.dao.interfaces.SubscriptionDao;
 import com.fitness.dao.interfaces.UserDao;
 import com.fitness.dto.subscription_dto.SubscriptionCreateDto;
@@ -32,6 +33,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionValidator subscriptionValidator;
     private final UserDao userDao;
 
+    private static final String SUBSCRIPTION_NUMBER_FORMAT = "SUB-%06d";
+
     public SubscriptionServiceImpl(SubscriptionDao subscriptionDao, SubscriptionMapper subscriptionMapper, SubscriptionValidator subscriptionValidator, UserDao userDao) {
         this.subscriptionDao = subscriptionDao;
         this.subscriptionMapper = subscriptionMapper;
@@ -43,7 +46,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public SubscriptionResponseDto findById(Long userId) {
 
         Subscription subscription = subscriptionDao.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Subscription not found with user id: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.SUBSCRIPTION_NOT_FOUND_BY_USER_ID + userId));
 
         return subscriptionMapper.toResponseDto(subscription);
     }
@@ -71,7 +74,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionValidator.validateNoActiveSubscription(userId);
 
         User user = userDao.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.USER_NOT_FOUND_BY_ID + userId));
 
         String subscriptionNumber = generateSubscriptionNumber();
         LocalDate endDate = calculateEndDate(type);
@@ -85,7 +88,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         String number;
 
         do {
-            number = String.format("SUB-%06d", ThreadLocalRandom.current().nextInt(100000, 1000000));
+            number = String.format(SUBSCRIPTION_NUMBER_FORMAT, ThreadLocalRandom.current()
+                    .nextInt(100000, 1000000));
         } while (subscriptionDao.existsBySubscriptionNumber(number));
 
         return number;

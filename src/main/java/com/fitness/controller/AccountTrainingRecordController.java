@@ -1,5 +1,9 @@
 package com.fitness.controller;
 
+import com.fitness.constants.PageNameConstants;
+import com.fitness.constants.Tabs;
+import com.fitness.constants.UriConstants;
+import com.fitness.constants.ViewConstants;
 import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.exception.ValidationException;
 import com.fitness.service.impl.CurrentUserService;
@@ -39,16 +43,16 @@ public class AccountTrainingRecordController {
         UserResponseDto user = currentUserService.getCurrentUser();
         boolean hasSubscription = subscriptionService.hasActiveSubscription(user.getId());
 
-        model.addAttribute("hasSubscription", subscriptionService.hasActiveSubscription(user.getId()));
+        model.addAttribute(ViewConstants.HAS_SUBSCRIPTION, hasSubscription);
 
         if (hasSubscription) {
-            model.addAttribute("subscription", subscriptionService.findById(user.getId()));
-            model.addAttribute("trainingRecords", trainingRecordService.findAllRecordsForUser(user.getId()));
+            model.addAttribute(ViewConstants.SUBSCRIPTION, subscriptionService.findById(user.getId()));
+            model.addAttribute(ViewConstants.TRAINING_RECORDS, trainingRecordService.findAllRecordsForUser(user.getId()));
         }
 
-        model.addAttribute("activeTab", "trainingRecords");
+        model.addAttribute(ViewConstants.ACTIVE_TAB, Tabs.TRAINING_RECORDS);
 
-        return "account/training-records/list";
+        return PageNameConstants.ACCOUNT_TRAINING_RECORDS_LIST;
     }
 
     @PostMapping("/book/{workoutTypeId}")
@@ -60,17 +64,17 @@ public class AccountTrainingRecordController {
         try {
             trainingRecordService.bookWorkout(user.getId(), workoutTypeId);
             String successMsg = messageSource.getMessage("account.booking.success", null, locale);
-            redirectAttributes.addFlashAttribute("successMessage", successMsg);
+            redirectAttributes.addFlashAttribute(ViewConstants.SUCCESS_MESSAGE, successMsg);
         } catch (ValidationException e) {
             String errorMsg = messageSource.getMessage("account.booking.already-booked", null, locale);
-            redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
+            redirectAttributes.addFlashAttribute(ViewConstants.ERROR_MESSAGE, errorMsg);
         }
-        return "redirect:/account/workout-types";
+        return UriConstants.REDIRECT_ACCOUNT_WORKOUT_TYPES;
     }
 
     @PostMapping("/cancel/{id}")
     public String cancelById(@PathVariable("id") Long id) {
         trainingRecordService.deleteById(id);
-        return "redirect:/account/training-records";
+        return UriConstants.REDIRECT_ACCOUNT_TRAINING_RECORDS;
     }
 }

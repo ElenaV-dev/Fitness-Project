@@ -1,5 +1,6 @@
 package com.fitness.service.impl;
 
+import com.fitness.constants.ErrorConstants;
 import com.fitness.dao.interfaces.WorkoutTypeDao;
 import com.fitness.dto.workout_type_dto.TrainerWorkoutTypeDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeCreateDto;
@@ -35,10 +36,7 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public WorkoutTypeResponseDto findById(Long id) {
-
-        WorkoutType workoutType = workoutTypeDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
-
+        WorkoutType workoutType = getWorkoutTypeById(id);
         return workoutTypeMapper.toResponseDto(workoutType);
     }
 
@@ -58,12 +56,8 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public void update(WorkoutTypeUpdateDto dto) {
-
         workoutTypeValidator.validateUpdateDto(dto);
-
-        WorkoutType workoutType = workoutTypeDao.findById(dto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + dto.getId()));
-
+        WorkoutType workoutType = getWorkoutTypeById(dto.getId());
         workoutTypeMapper.updateEntity(dto, workoutType);
         workoutTypeDao.update(workoutType);
         LOGGER.info("Workout type updated. Id={}", dto.getId());
@@ -71,25 +65,24 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
 
     @Override
     public void deleteById(Long id) {
-
-        WorkoutType workoutType = workoutTypeDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
-
+        WorkoutType workoutType = getWorkoutTypeById(id);
         workoutTypeDao.delete(workoutType);
         LOGGER.info("Workout type deleted. Id={}", id);
     }
 
     @Override
     public WorkoutTypeUpdateDto findUpdateDtoById(Long id) {
-
-        WorkoutType workoutType = workoutTypeDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Workout type not found with id: " + id));
-
+        WorkoutType workoutType = getWorkoutTypeById(id);
         return workoutTypeMapper.toUpdateDto(workoutType);
     }
 
     @Override
     public List<TrainerWorkoutTypeDto> findWorkoutTypesForTrainer() {
         return workoutTypeDao.findWorkoutTypesWithPeopleCount();
+    }
+
+    private WorkoutType getWorkoutTypeById(Long id) {
+        return workoutTypeDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.WORKOUT_TYPE_NOT_FOUND_BY_ID + id));
     }
 }

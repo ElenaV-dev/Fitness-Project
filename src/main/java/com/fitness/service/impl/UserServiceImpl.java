@@ -1,5 +1,6 @@
 package com.fitness.service.impl;
 
+import com.fitness.constants.ErrorConstants;
 import com.fitness.dao.interfaces.UserDao;
 import com.fitness.dto.user_dto.UserCreateDto;
 import com.fitness.dto.user_dto.UserRegisterDto;
@@ -35,10 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(Long id) {
-
-        User user = userDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
-
+        User user = getUserById(id);
         return userMapper.toResponseDto(user);
     }
 
@@ -58,12 +56,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(UserUpdateDto dto) {
-
         userValidator.validateUpdateDto(dto);
-
-        User user = userDao.findById(dto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + dto.getId()));
-
+        User user = getUserById(dto.getId());
         userMapper.updateEntity(dto, user);
         userDao.update(user);
         LOGGER.info("User updated. Id={}", dto.getId());
@@ -71,20 +65,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(Long id) {
-
-        User user = userDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
-
+        User user = getUserById(id);
         userDao.delete(user);
         LOGGER.info("User deleted. Id={}", id);
     }
 
     @Override
     public UserUpdateDto findUpdateDtoById(Long id) {
-
-        User user = userDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
-
+        User user = getUserById(id);
         return userMapper.toUpdateDto(user);
     }
 
@@ -100,8 +88,13 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto findByEmail(String email) {
 
         User user = userDao.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.USER_NOT_FOUND_BY_EMAIL + email));
 
         return userMapper.toResponseDto(user);
+    }
+
+    private User getUserById(Long id) {
+        return userDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.USER_NOT_FOUND_BY_ID + id));
     }
 }

@@ -1,5 +1,6 @@
 package com.fitness.controller;
 
+import com.fitness.constants.PageNameConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -8,6 +9,6 @@ public class MainController {
 
     @GetMapping("/")
     public String getMainPage() {
-        return "main";
+        return PageNameConstants.MAIN;
     }
 }

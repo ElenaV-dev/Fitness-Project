@@ -1,5 +1,6 @@
 package com.fitness.validator;
 
+import com.fitness.constants.ErrorConstants;
 import com.fitness.dao.interfaces.SubscriptionDao;
 import com.fitness.dao.interfaces.TrainingRecordDao;
 import com.fitness.exception.ValidationException;
@@ -20,11 +21,11 @@ public class TrainingRecordValidator {
 
     public void validateCreateRecord(User user, WorkoutType workoutType) {
         if (trainingRecordDao.existsByUserIdAndWorkoutTypeId(user.getId(), workoutType.getId())) {
-            throw new ValidationException("You are already registered for this workout");
+            throw new ValidationException(ErrorConstants.WORKOUT_TYPE_BOOKED);
         }
 
         if (!subscriptionDao.hasActiveSubscription(user.getId())) {
-            throw new ValidationException("Active subscription required");
+            throw new ValidationException(ErrorConstants.SUBSCRIPTION_REQUIRED);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.fitness.dao.impl;
 
+import com.fitness.constants.QueryParamConstants;
 import com.fitness.dao.interfaces.SubscriptionDao;
 import com.fitness.model.Subscription;
 import jakarta.persistence.EntityManager;
@@ -55,8 +56,8 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     public boolean hasActiveSubscription(Long userId) {
 
         Long count = entityManager.createQuery(SELECT_ACTIVE_SUBSCRIPTION_COUNT, Long.class)
-                .setParameter("userId", userId)
-                .setParameter("today", LocalDate.now())
+                .setParameter(QueryParamConstants.USER_ID, userId)
+                .setParameter(QueryParamConstants.TODAY, LocalDate.now())
                 .getSingleResult();
 
         return count > 0;
@@ -66,7 +67,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     public boolean existsBySubscriptionNumber(String number) {
 
         Long count = entityManager.createQuery(SELECT_SUBSCRIPTION_BY_NUMBER, Long.class)
-                .setParameter("number", number )
+                .setParameter(QueryParamConstants.NUMBER, number )
                 .getSingleResult();
 
         return count > 0;

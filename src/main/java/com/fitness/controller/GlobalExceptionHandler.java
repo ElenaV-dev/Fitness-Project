@@ -1,5 +1,7 @@
 package com.fitness.controller;
 
+import com.fitness.constants.PageNameConstants;
+import com.fitness.constants.ViewConstants;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,8 +32,8 @@ public class GlobalExceptionHandler {
         LOGGER.warn("Entity not found: {}", ex.getMessage());
         Locale locale = LocaleContextHolder.getLocale();
         String translatedMessage = messageSource.getMessage("error.404.default-msg", null, locale);
-        model.addAttribute("message", translatedMessage);
-        return "errors/404";
+        model.addAttribute(ViewConstants.MESSAGE, translatedMessage);
+        return PageNameConstants.ERROR_404;
     }
 
     @ExceptionHandler(Exception.class)
@@ -40,7 +42,7 @@ public class GlobalExceptionHandler {
         LOGGER.error("Unexpected error", ex);
         Locale locale = LocaleContextHolder.getLocale();
         String translatedMessage = messageSource.getMessage("error.500.default-msg", null, locale);
-        model.addAttribute("message", translatedMessage);
-        return "errors/500";
+        model.addAttribute(ViewConstants.MESSAGE, translatedMessage);
+        return PageNameConstants.ERROR_500;
     }
 }

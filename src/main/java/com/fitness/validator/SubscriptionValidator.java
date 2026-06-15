@@ -1,5 +1,6 @@
 package com.fitness.validator;
 
+import com.fitness.constants.ErrorConstants;
 import com.fitness.dao.interfaces.SubscriptionDao;
 import com.fitness.exception.ValidationException;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ public class SubscriptionValidator {
 
     public void validateNoActiveSubscription(Long userId) {
         if (subscriptionDao.hasActiveSubscription(userId)) {
-            throw new ValidationException("Active subscription already exists");
+            throw new ValidationException(ErrorConstants.SUBSCRIPTION_EXISTS);
         }
     }
 }

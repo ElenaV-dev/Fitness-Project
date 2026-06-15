@@ -1,5 +1,6 @@
 package com.fitness.dao.impl;
 
+import com.fitness.constants.QueryParamConstants;
 import com.fitness.dao.interfaces.UserDao;
 import com.fitness.model.User;
 import jakarta.persistence.EntityManager;
@@ -54,7 +55,7 @@ public class UserDaoImpl implements UserDao {
     public boolean existsByEmail(String email) {
 
         Long count = entityManager.createQuery(SELECT_COUNT_USERS_BY_EMAIL, Long.class)
-                .setParameter("email", email)
+                .setParameter(QueryParamConstants.EMAIL, email)
                 .getSingleResult();
 
         return count > 0;
@@ -64,8 +65,8 @@ public class UserDaoImpl implements UserDao {
     public boolean existsByEmailAndIdNot(String email, Long id) {
 
         Long count = entityManager.createQuery(SELECT_COUNT_USER_BY_EMAIL_AND_ID_NOT, Long.class)
-                .setParameter("email", email)
-                .setParameter("id", id)
+                .setParameter(QueryParamConstants.EMAIL, email)
+                .setParameter(QueryParamConstants.ID, id)
                 .getSingleResult();
 
         return count > 0;
@@ -75,7 +76,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
 
         List<User> users = entityManager.createQuery(SELECT_USER_BY_EMAIL, User.class)
-                .setParameter("email", email)
+                .setParameter(QueryParamConstants.EMAIL, email)
                 .getResultList();
 
         return users.stream().findFirst();

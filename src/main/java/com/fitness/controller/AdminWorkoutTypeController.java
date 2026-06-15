@@ -1,5 +1,6 @@
 package com.fitness.controller;
 
+import com.fitness.constants.*;
 import com.fitness.dto.workout_type_dto.WorkoutTypeCreateDto;
 import com.fitness.dto.workout_type_dto.WorkoutTypeUpdateDto;
 import com.fitness.service.interfaces.WorkoutTypeService;
@@ -24,15 +25,15 @@ public class AdminWorkoutTypeController {
 
     @GetMapping
     public String adminPage(Model model) {
-        model.addAttribute("workoutTypes", workoutTypeService.findAll());
-        model.addAttribute("activeTab", "workouts");
-        return "admin/workout-types/list";
+        model.addAttribute(ViewConstants.WORKOUT_TYPES, workoutTypeService.findAll());
+        model.addAttribute(ViewConstants.ACTIVE_TAB, Tabs.WORKOUTS);
+        return PageNameConstants.ADMIN_WORKOUT_TYPES_LIST;
     }
 
     @GetMapping("/create")
     public String createForm(Model model) {
-        model.addAttribute("workoutType", new WorkoutTypeCreateDto());
-        return "admin/workout-types/create";
+        model.addAttribute(ViewConstants.WORKOUT_TYPE, new WorkoutTypeCreateDto());
+        return PageNameConstants.ADMIN_WORKOUT_TYPES_CREATE;
     }
 
     @PostMapping("/create")
@@ -40,23 +41,22 @@ public class AdminWorkoutTypeController {
 
         if (workoutTypeValidator.titleExists(dto.getTitle())) {
             bindingResult.rejectValue(
-                    "title",
-                    "workoutType.exists",
-                    "Workout type with this title already exists");
+                    FieldConstants.TITLE,
+                    ValidationConstants.WORKOUT_TYPE_EXISTS);
         }
 
         if (bindingResult.hasErrors()) {
-            return "admin/workout-types/create";
+            return PageNameConstants.ADMIN_WORKOUT_TYPES_CREATE;
         }
 
         workoutTypeService.save(dto);
-        return "redirect:/admin/workout-types";
+        return UriConstants.REDIRECT_ADMIN_WORKOUT_TYPES;
     }
 
     @GetMapping("/edit/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("workoutType", workoutTypeService.findUpdateDtoById(id));
-        return "admin/workout-types/edit";
+        model.addAttribute(ViewConstants.WORKOUT_TYPE, workoutTypeService.findUpdateDtoById(id));
+        return PageNameConstants.ADMIN_WORKOUT_TYPES_EDIT;
     }
 
     @PostMapping("/edit")
@@ -64,22 +64,21 @@ public class AdminWorkoutTypeController {
 
         if (workoutTypeValidator.titleExistsForAnotherWorkoutType(dto.getTitle(), dto.getId())) {
             bindingResult.rejectValue(
-                    "title",
-                    "workoutType.exists",
-                    "Workout type with this title already exists");
+                    FieldConstants.TITLE,
+                    ValidationConstants.WORKOUT_TYPE_EXISTS);
         }
 
         if (bindingResult.hasErrors()) {
-            return "admin/workout-types/edit";
+            return PageNameConstants.ADMIN_WORKOUT_TYPES_EDIT;
         }
 
         workoutTypeService.update(dto);
-        return "redirect:/admin/workout-types";
+        return UriConstants.REDIRECT_ADMIN_WORKOUT_TYPES;
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         workoutTypeService.deleteById(id);
-        return "redirect:/admin/workout-types";
+        return UriConstants.REDIRECT_ADMIN_WORKOUT_TYPES;
     }
 }

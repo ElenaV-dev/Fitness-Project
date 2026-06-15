@@ -1,5 +1,9 @@
 package com.fitness.controller;
 
+import com.fitness.constants.PageNameConstants;
+import com.fitness.constants.Tabs;
+import com.fitness.constants.UriConstants;
+import com.fitness.constants.ViewConstants;
 import com.fitness.dto.user_dto.UserResponseDto;
 import com.fitness.exception.ValidationException;
 import com.fitness.model.SubscriptionType;
@@ -34,15 +38,15 @@ public class AccountSubscriptionController {
         UserResponseDto user = currentUserService.getCurrentUser();
 
         boolean hasSubscription = subscriptionService.hasActiveSubscription(user.getId());
-        model.addAttribute("hasSubscription", subscriptionService.hasActiveSubscription(user.getId()));
+        model.addAttribute(ViewConstants.HAS_SUBSCRIPTION, hasSubscription);
 
         if (hasSubscription) {
-            model.addAttribute("subscription", subscriptionService.findById(user.getId()));
+            model.addAttribute(ViewConstants.SUBSCRIPTION, subscriptionService.findById(user.getId()));
         }
 
-        model.addAttribute("activeTab", "subscription");
+        model.addAttribute(ViewConstants.ACTIVE_TAB, Tabs.SUBSCRIPTION);
 
-        return "account/subscription/details";
+        return PageNameConstants.ACCOUNT_SUBSCRIPTION_DETAILS;
     }
 
     @PostMapping("/buy")
@@ -54,11 +58,11 @@ public class AccountSubscriptionController {
         try {
             subscriptionService.buySubscription(user.getId(), type);
             String successMsg = messageSource.getMessage("account.subscription.buy.success", null, locale);
-            redirectAttributes.addFlashAttribute("successMessage", successMsg);
+            redirectAttributes.addFlashAttribute(ViewConstants.SUCCESS_MESSAGE, successMsg);
         } catch (ValidationException e) {
             String errorMsg = messageSource.getMessage("account.subscription.buy.error-exists", null, locale);
-            redirectAttributes.addFlashAttribute("errorMessage", errorMsg);
+            redirectAttributes.addFlashAttribute(ViewConstants.ERROR_MESSAGE, errorMsg);
         }
-        return "redirect:/account/subscription";
+        return UriConstants.REDIRECT_ACCOUNT_SUBSCRIPTION;
     }
 }
