@@ -15,6 +15,9 @@ public final class ViewConstants {
     public static final String SUCCESS_MESSAGE = "successMessage";
     public static final String ERROR_MESSAGE = "errorMessage";
 
+    public static final String CURRENT_PAGE = "currentPage";
+    public static final String TOTAL_PAGES = "totalPages";
+
     private ViewConstants() {
     }
 }

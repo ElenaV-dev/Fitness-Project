@@ -134,6 +134,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>fitness</finalName>
         <plugins>

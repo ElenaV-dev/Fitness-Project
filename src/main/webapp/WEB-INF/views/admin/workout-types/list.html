@@ -63,6 +63,45 @@
         </tbody>
     </table>
 
+    <nav th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item"
+                th:classappend="${currentPage == 1} ? ' disabled'">
+
+                <a class="page-link"
+                   th:text="#{pagination.previous}"
+                   th:href="@{/admin/workout-types(page=${currentPage - 1})}">
+                    Previous
+                </a>
+
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(1, totalPages)}"
+                th:classappend="${i == currentPage} ? ' active'">
+
+                <a class="page-link"
+                   th:text="${i}"
+                   th:href="@{/admin/workout-types(page=${i})}">
+                </a>
+
+            </li>
+
+            <li class="page-item"
+                th:classappend="${currentPage == totalPages} ? ' disabled'">
+
+                <a class="page-link"
+                   th:text="#{pagination.next}"
+                   th:href="@{/admin/workout-types(page=${currentPage + 1})}">
+                    Next
+                </a>
+
+            </li>
+
+        </ul>
+    </nav>
+
 </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

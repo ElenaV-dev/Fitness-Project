@@ -13,4 +13,7 @@ public interface WorkoutTypeDao extends BaseDao<WorkoutType, Long> {
 
     List<TrainerWorkoutTypeDto> findWorkoutTypesWithPeopleCount();
 
+    List<WorkoutType> findPage(int page, int size);
+
+    Long count();
 }

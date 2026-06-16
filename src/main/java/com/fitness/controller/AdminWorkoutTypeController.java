@@ -24,9 +24,16 @@ public class AdminWorkoutTypeController {
     }
 
     @GetMapping
-    public String adminPage(Model model) {
-        model.addAttribute(ViewConstants.WORKOUT_TYPES, workoutTypeService.findAll());
+    public String adminPage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+
+        int size = 5;
+        long totalItems = workoutTypeService.count();
+        int totalPages = (int) Math.ceil((double) totalItems / size);
+
+        model.addAttribute(ViewConstants.WORKOUT_TYPES, workoutTypeService.findPage(page, totalPages));
         model.addAttribute(ViewConstants.ACTIVE_TAB, Tabs.WORKOUTS);
+        model.addAttribute(ViewConstants.CURRENT_PAGE, page);
+        model.addAttribute(ViewConstants.TOTAL_PAGES, totalPages);
         return PageNameConstants.ADMIN_WORKOUT_TYPES_LIST;
     }
 

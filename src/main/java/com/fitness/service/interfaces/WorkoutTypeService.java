@@ -28,4 +28,20 @@ public interface WorkoutTypeService extends BaseService<WorkoutTypeResponseDto, 
      * @return list of workout types available for trainers
      */
     List<TrainerWorkoutTypeDto> findWorkoutTypesForTrainer();
+
+    /**
+     * Returns a list of workout types for the specified page.
+     *
+     * @param page page number
+     * @param size number of workout types per page
+     * @return list of workout types
+     */
+    List<WorkoutTypeResponseDto> findPage(int page, int size);
+
+    /**
+     * Returns the total number of workout types.
+     *
+     * @return total number of workout types
+     */
+    long count();
 }

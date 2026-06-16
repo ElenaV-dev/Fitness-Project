@@ -18,7 +18,7 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String SELECT_ALL_WORKOUT_TYPES = "SELECT w FROM WorkoutType w";
+    private static final String SELECT_ALL_WORKOUT_TYPES = "SELECT w FROM WorkoutType w ORDER BY w.id";
     private static final String SELECT_COUNT_WORKOUT_TYPE_BY_TITLE = "SELECT COUNT(w) FROM WorkoutType w " +
             "WHERE w.title = :title";
     private static final String SELECT_COUNT_WORKOUT_TYPE_BY_TITLE_AND_ID_NOT = "SELECT COUNT(w) FROM WorkoutType w " +
@@ -27,6 +27,7 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
             "wt.id, wt.title, COUNT(tr.id)) FROM WorkoutType wt LEFT JOIN TrainingRecord tr " +
             "ON tr.workoutType = wt GROUP BY wt.id, wt.title " +
             "ORDER BY wt.id ASC";
+    private static final String SELECT_COUNT_ALL_WORKOUT_TYPES = "SELECT COUNT(w) FROM WorkoutType w";
 
     @Override
     public Optional<WorkoutType> findById(Long id) {
@@ -82,5 +83,19 @@ public class WorkoutTypeDaoImpl implements WorkoutTypeDao {
         TypedQuery<TrainerWorkoutTypeDto> query = entityManager.createQuery(SELECT_WORKOUT_TYPES_WITH_PEOPLE_COUNT, TrainerWorkoutTypeDto.class);
         List<TrainerWorkoutTypeDto> trainerWorkoutTypeDtos = query.getResultList();
         return trainerWorkoutTypeDtos;
+    }
+
+    @Override
+    public List<WorkoutType> findPage(int page, int size) {
+        return entityManager.createQuery(SELECT_ALL_WORKOUT_TYPES, WorkoutType.class)
+                .setFirstResult((page - 1) * size)
+                .setMaxResults(size)
+                .getResultList();
+    }
+
+    @Override
+    public Long count() {
+        return entityManager.createQuery(SELECT_COUNT_ALL_WORKOUT_TYPES, Long.class)
+                .getSingleResult();
     }
 }
