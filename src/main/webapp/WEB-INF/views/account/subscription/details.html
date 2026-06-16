@@ -115,17 +115,26 @@
 
         <div class="card" style="max-width: 500px;">
             <div class="card-body">
-                <p><strong th:text="#{sub.info.number}">Номер:</strong> <span th:text="${subscription.subscriptionNumber}">SUB-123456</span></p>
+                <p>
+                    <strong th:text="#{sub.info.number}">Номер:</strong>
+                    <span th:text="${subscription != null ? subscription.subscriptionNumber : ''}">SUB-123456</span>
+                </p>
+
                 <p>
                     <strong th:text="#{sub.info.type}">Тип:</strong>
-                    <!-- Динамический перевод Enum значений -->
-                    <span th:text="${subscription.subscriptionType.name() == 'MONTH' ? #{sub.type.month} :
-                                   (subscription.subscriptionType.name() == 'THREE_MONTH' ? #{sub.type.three-months} : #{sub.type.year})}">MONTH</span>
+
+                    <th:block th:if="${subscription != null && subscription.subscriptionType != null}" th:switch="${subscription.subscriptionType.name()}">
+                        <span th:case="'MONTH'" th:text="#{sub.type.month}">1 Month</span>
+                        <span th:case="'THREE_MONTH'" th:text="#{sub.type.three-months}">3 Months</span>
+                        <span th:case="'YEAR'" th:text="#{sub.type.year}">1 Year</span>
+                    </th:block>
                 </p>
+
                 <p>
                     <strong th:text="#{sub.info.end-date}">Действует до:</strong>
 
-                    <span th:text="${#temporals.format(subscription.endDate, 'dd.MM.yyyy')}">2026-07-01</span>
+                    <span th:if="${subscription != null && subscription.endDate != null}"
+                          th:text="${#temporals.format(subscription.endDate, 'dd.MM.yyyy')}">2026-07-01</span>
                 </p>
             </div>
         </div>
