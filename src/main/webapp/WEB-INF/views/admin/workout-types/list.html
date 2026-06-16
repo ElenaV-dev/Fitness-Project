@@ -33,14 +33,15 @@
         <a th:href="@{/admin/workout-types/create}" class="btn btn-success" th:text="#{admin.services.btn-add}">Добавить услугу</a>
     </div>
 
-    <table class="table table-bordered table-hover bg-white">
+    <table class="table table-bordered table-hover bg-white" style="table-layout: fixed;">
         <thead class="table-dark">
         <tr>
-            <th th:text="#{admin.table.id}">ID</th>
-            <th th:text="#{admin.table.title}">Название</th>
-            <th width="220" th:text="#{admin.table.actions}">Действия</th>
+            <th style="width: 10%;" th:text="#{admin.table.id}">ID</th>
+            <th style="width: 65%;" th:text="#{admin.table.title}">Название</th>
+            <th style="width: 25%;" th:text="#{admin.table.actions}">Действия</th>
         </tr>
         </thead>
+
         <tbody>
         <tr th:each="workoutType : ${workoutTypes}">
             <td th:text="${workoutType.id}">1</td>
