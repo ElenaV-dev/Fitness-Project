@@ -24,42 +24,53 @@
                 <div class="card-body">
                     <form th:action="@{/admin/users/edit}"
                           th:object="${user}"
-                          method="post">
+                          method="post"
+                          class="needs-validation"
+                          novalidate>
 
                         <input type="hidden" th:field="*{id}">
 
                         <div class="mb-3">
                             <label class="form-label" th:text="#{admin.users.create.label-firstname}">Имя</label>
-                            <input type="text" th:field="*{firstName}" class="form-control">
-                            <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                            <input type="text" th:field="*{firstName}" class="form-control"
+                                   required maxlength="50" pattern="^[a-zA-Zа-яА-ЯёЁ\s-]+$">
+                            <div class="invalid-feedback">Пожалуйста, введите корректное имя (только буквы).</div>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" th:text="#{admin.users.create.label-lastname}">Фамилия</label>
-                            <input type="text" th:field="*{lastName}" class="form-control">
-                            <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                            <input type="text" th:field="*{lastName}" class="form-control"
+                                   required maxlength="50" pattern="^[a-zA-Zа-яА-ЯёЁ\s-]+$">
+                            <div class="invalid-feedback">Пожалуйста, введите корректную фамилию (только буквы).</div>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" th:text="#{admin.users.create.label-email}">Email</label>
-                            <input type="email" th:field="*{email}" class="form-control">
+                            <input type="email" th:field="*{email}" class="form-control" required maxlength="100">
+                            <div class="invalid-feedback">Пожалуйста, введите валидный Email адрес.</div>
                             <div class="text-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" th:text="#{admin.users.create.label-password}">Пароль</label>
-                            <input type="password" th:field="*{password}" class="form-control">
-                            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                            <input type="password" th:field="*{password}" class="form-control"
+                                   placeholder="Оставьте пустым, если не хотите менять"
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$">
+                            <div class="invalid-feedback">Новый пароль должен быть не менее 8 символов, содержать цифру, заглавную и строчную букву.</div>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" th:text="#{admin.users.create.label-role}">Роль</label>
-                            <select th:field="*{role}" class="form-select">
+                            <select th:field="*{role}" class="form-select" required>
                                 <option value="CLIENT" th:text="#{role.client}">Клиент</option>
                                 <option value="TRAINER" th:text="#{role.trainer}">Тренер</option>
                                 <option value="ADMIN" th:text="#{role.admin}">Администратор</option>
                             </select>
-                            <div class="text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                            <div class="invalid-feedback">Пожалуйста, выберите роль.</div>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
                         </div>
 
                         <button type="submit" class="btn btn-primary" th:text="#{admin.services.edit.btn-save}">Сохранить изменения</button>
@@ -71,8 +82,31 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
+    const nameInputs = document.querySelectorAll('input[th\\:field="*{firstName}"], input[th\\:field="*{lastName}"], input[id="firstName"], input[id="lastName"]');
+    nameInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?`~]/g, '');
+        });
+    });
+</script>
+<script src="https://jsdelivr.net"></script>
 
 </body>
 </html>

@@ -16,10 +16,12 @@ public class UserUpdateDto {
 
     @NotBlank(message = "{user.firstname.required}")
     @Size(max = 50, message = "{user.firstname.size}")
+    @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ\\s-]+$", message = "{user.firstname.pattern}")
     private String firstName;
 
     @NotBlank(message = "{user.lastname.required}")
     @Size(max = 50, message = "{user.lastname.size}")
+    @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ\\s-]+$", message = "{user.lastname.pattern}")
     private String lastName;
 
     @NotBlank(message = "{user.email.required}")
@@ -28,8 +30,7 @@ public class UserUpdateDto {
     private String email;
 
     @Size(min = 8, message = "{user.password.size}")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
-            message = "{user.password.pattern}")
+    @Pattern(regexp = "^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$", message = "{user.password.pattern}")
     private String password;
 
     @NotNull(message = "{user.role.required}")

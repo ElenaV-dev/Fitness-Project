@@ -24,14 +24,22 @@
                 <div class="card-body">
                     <form th:action="@{/admin/workout-types/create}"
                           th:object="${workoutType}"
-                          method="post">
+                          method="post"
+                          class="needs-validation"
+                          novalidate>
 
                         <div class="mb-3">
                             <label class="form-label" th:text="#{admin.services.create.label-title}">Название услуги</label>
 
                             <input type="text"
+                                   id="title"
                                    th:field="*{title}"
-                                   class="form-control">
+                                   class="form-control"
+                                   required
+                                   maxlength="100"
+                                   pattern="^[a-zA-Zа-яА-ЯёЁ\s-]+$">
+
+                            <div class="invalid-feedback">Пожалуйста, введите корректное название (только буквы).</div>
 
                             <div class="text-danger mt-1"
                                  th:if="${#fields.hasErrors('title')}"
@@ -43,6 +51,7 @@
                         <a th:href="@{/admin/workout-types}" class="btn btn-secondary" th:text="#{admin.form.btn-cancel}">Отмена</a>
 
                     </form>
+
                 </div>
 
             </div>
@@ -50,6 +59,28 @@
     </div>
 
 </div>
+<script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
 
+    const titleInput = document.getElementById('title');
+    if (titleInput) {
+        titleInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?`~]/g, '');
+        });
+    }
+</script>
+<script src="https://jsdelivr.net"></script>
 </body>
 </html>

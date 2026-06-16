@@ -13,10 +13,12 @@ public class UserCreateDto {
 
     @NotBlank(message = "{user.firstname.required}")
     @Size(max = 50, message = "{user.firstname.size}")
+    @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ\\s-]+$", message = "{user.firstname.pattern}")
     private String firstName;
 
     @NotBlank(message = "{user.lastname.required}")
     @Size(max = 50, message = "{user.lastname.size}")
+    @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ\\s-]+$", message = "{user.lastname.pattern}")
     private String lastName;
 
     @NotBlank(message = "{user.email.required}")

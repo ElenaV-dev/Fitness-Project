@@ -1,6 +1,7 @@
 package com.fitness.dto.workout_type_dto;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ public class WorkoutTypeUpdateDto {
 
     @NotBlank(message = "{workout.title.required}")
     @Size(max = 100, message = "{workout.title.size}")
+    @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ\\s-]+$", message = "{workout.title.pattern}")
     private String title;
 
     public WorkoutTypeUpdateDto() { }
