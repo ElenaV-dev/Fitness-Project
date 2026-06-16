@@ -1,10 +1,11 @@
 package com.fitness.config;
 
-import com.fitness.config.interceptor.AuditInterceptor;
+import com.fitness.interceptor.AuditInterceptor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -19,6 +20,7 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
+@EnableAspectJAutoProxy
 @ComponentScan("com.fitness")
 public class WebConfig implements WebMvcConfigurer {
 
