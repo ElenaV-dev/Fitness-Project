@@ -1,5 +1,6 @@
 package com.fitness.config;
 
+import com.fitness.config.interceptor.AuditInterceptor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +21,12 @@ import java.util.Locale;
 @EnableWebMvc
 @ComponentScan("com.fitness")
 public class WebConfig implements WebMvcConfigurer {
+
+    private final AuditInterceptor auditInterceptor;
+
+    public WebConfig(AuditInterceptor auditInterceptor) {
+        this.auditInterceptor = auditInterceptor;
+    }
 
     @Bean
     public MessageSource messageSource() {
@@ -63,5 +70,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(auditInterceptor);
     }
 }
