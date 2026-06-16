@@ -12,6 +12,8 @@ import com.fitness.model.Subscription;
 import com.fitness.model.SubscriptionType;
 import com.fitness.model.User;
 import com.fitness.service.interfaces.SubscriptionService;
+import com.fitness.strategy.subscription.SubscriptionStrategy;
+import com.fitness.strategy.subscription.SubscriptionStrategyFactory;
 import com.fitness.validator.SubscriptionValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,14 +34,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionMapper subscriptionMapper;
     private final SubscriptionValidator subscriptionValidator;
     private final UserDao userDao;
+    private final SubscriptionStrategyFactory strategyFactory;
 
     private static final String SUBSCRIPTION_NUMBER_FORMAT = "SUB-%06d";
 
-    public SubscriptionServiceImpl(SubscriptionDao subscriptionDao, SubscriptionMapper subscriptionMapper, SubscriptionValidator subscriptionValidator, UserDao userDao) {
+    public SubscriptionServiceImpl(SubscriptionDao subscriptionDao, SubscriptionMapper subscriptionMapper, SubscriptionValidator subscriptionValidator, UserDao userDao, SubscriptionStrategyFactory strategyFactory) {
         this.subscriptionDao = subscriptionDao;
         this.subscriptionMapper = subscriptionMapper;
         this.subscriptionValidator = subscriptionValidator;
         this.userDao = userDao;
+        this.strategyFactory = strategyFactory;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.USER_NOT_FOUND_BY_ID + userId));
 
         String subscriptionNumber = generateSubscriptionNumber();
-        LocalDate endDate = calculateEndDate(type);
+        LocalDate endDate = strategyFactory.getStrategy(type).calculateEndDate();
         Subscription subscription = subscriptionMapper.createSubscription(user, type, subscriptionNumber, endDate);
         subscriptionDao.save(subscription);
         LOGGER.info("Subscription purchased. UserId={}, Type={}, Number={}", userId, type, subscriptionNumber);
@@ -93,17 +97,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         } while (subscriptionDao.existsBySubscriptionNumber(number));
 
         return number;
-    }
-
-    private LocalDate calculateEndDate(SubscriptionType type) {
-        return switch (type) {
-
-            case MONTH -> LocalDate.now().plusMonths(1);
-
-            case THREE_MONTH -> LocalDate.now().plusMonths(3);
-
-            case YEAR -> LocalDate.now().plusYears(1);
-        };
     }
 
     @Override
