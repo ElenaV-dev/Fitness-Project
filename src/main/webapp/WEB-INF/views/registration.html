@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{reg.page-title}">Регистрация</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+        .registration-container {
+            min-height: 100vh;
+        }
+        .registration-card {
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            border-radius: 20px;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container registration-container d-flex justify-content-center align-items-center">
+
+    <div class="registration-card shadow">
+
+        <h2 class="text-center mb-4" th:text="#{reg.header}">
+            Регистрация
+        </h2>
+
+        <form th:action="@{/registration}"
+              th:object="${user}"
+              method="post"
+              class="needs-validation"
+              novalidate>
+
+            <div class="mb-3">
+                <label for="firstName" class="form-label" th:text="#{reg.label-firstname}">Имя</label>
+                <input type="text"
+                       id="firstName"
+                       th:field="*{firstName}"
+                       class="form-control"
+                       th:placeholder="#{reg.placeholder-firstname}"
+                       required
+                       maxlength="50"
+                       pattern="^[a-zA-Zа-яА-ЯёЁ\s-]+$">
+                <div class="invalid-feedback">Пожалуйста, введите корректное имя (только буквы).</div>
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="lastName" class="form-label" th:text="#{reg.label-lastname}">Фамилия</label>
+                <input type="text"
+                       id="lastName"
+                       th:field="*{lastName}"
+                       class="form-control"
+                       th:placeholder="#{reg.placeholder-lastname}"
+                       required
+                       maxlength="50"
+                       pattern="^[a-zA-Zа-яА-ЯёЁ\s-]+$">
+                <div class="invalid-feedback">Пожалуйста, введите корректную фамилию (только буквы).</div>
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label" th:text="#{reg.label-email}">Email</label>
+                <input type="email"
+                       id="email"
+                       th:field="*{email}"
+                       class="form-control"
+                       th:placeholder="#{reg.placeholder-email}"
+                       required
+                       maxlength="100">
+                <div class="invalid-feedback">Пожалуйста, укажите валидный Email.</div>
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label" th:text="#{reg.label-password}">Пароль</label>
+                <input type="password"
+                       id="password"
+                       th:field="*{password}"
+                       class="form-control"
+                       th:placeholder="#{reg.placeholder-password}"
+                       required
+                       minlength="8"
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$">
+                <div class="invalid-feedback">Пароль должен содержать от 8 символов, включая цифру, большую и маленькую буквы.</div>
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100" th:text="#{reg.btn-submit}">Зарегистрироваться</button>
+
+        </form>
+
+
+        <hr>
+
+        <div class="text-center">
+            <p class="mb-2 text-muted small" th:text="#{reg.text-has-account}">Уже есть аккаунт?</p>
+            <a th:href="@{/login}" class="btn btn-outline-dark" th:text="#{reg.btn-login}">Войти</a>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+
+<script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
+    const nameInputs = document.querySelectorAll('#firstName, #lastName');
+    nameInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?`~]/g, '');
+        });
+    });
+</script>
+
+</body>
+</html>

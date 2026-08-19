@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{account.page-title}">Страница клиента</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div th:replace="~{fragments/account-header :: account-menu}"></div>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'workoutTypes'} ? 'active'"
+               th:href="@{/account/workout-types}"
+               th:text="#{account.tab.workout-types}">Выбор тренировок</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'trainingRecords'} ? 'active'"
+               th:href="@{/account/training-records}"
+               th:text="#{account.tab.my-records}">Ваши тренировки</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'subscriptions'} ? 'active'"
+               th:href="@{/account/subscription}"
+               th:text="#{account.tab.subscription}">Абонемент</a>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 th:text="#{account.workout-types.header}">Выбор тренировок</h3>
+    </div>
+
+    <div class="alert alert-warning" th:if="${!hasSubscription}">
+        <span th:text="#{account.alert.no-subscription}">Для записи на тренировки необходимо приобрести абонемент.</span>
+        <a th:href="@{/account/subscription}" class="alert-link" th:text="#{account.alert.link-buy}">Перейти к покупке</a>
+    </div>
+
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <table class="table table-bordered table-hover bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th th:text="#{admin.table.id}">ID</th>
+            <th th:text="#{admin.table.title}">Название</th>
+            <th width="220" th:text="#{admin.table.actions}">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="workoutType : ${workoutTypes}">
+            <td th:text="${workoutType.id}">1</td>
+            <td th:text="${workoutType.title}">Бег</td>
+            <td>
+                <form th:if="${hasSubscription}"
+                      th:action="@{/account/training-records/book/{id}(id=${workoutType.id})}"
+                      method="post"
+                      style="display:inline">
+                    <button type="submit" class="btn btn-primary btn-sm" th:text="#{account.btn.book}">Записаться</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

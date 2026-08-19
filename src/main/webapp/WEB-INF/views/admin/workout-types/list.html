@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{admin.page-title}">Администрирование</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div th:replace="~{fragments/admin-header :: admin-menu}"></div>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'workouts'} ? ' active'"
+               th:href="@{/admin/workout-types}"
+               th:text="#{admin.tab.services}">Услуги</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               th:classappend="${activeTab == 'users'} ? ' active'"
+               th:href="@{/admin/users}"
+               th:text="#{admin.tab.users}">Пользователи</a>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 th:text="#{admin.services.header}">Услуги</h3>
+        <a th:href="@{/admin/workout-types/create}" class="btn btn-success" th:text="#{admin.services.btn-add}">Добавить услугу</a>
+    </div>
+
+    <table class="table table-bordered table-hover bg-white" style="table-layout: fixed;">
+        <thead class="table-dark">
+        <tr>
+            <th style="width: 10%;" th:text="#{admin.table.id}">ID</th>
+            <th style="width: 65%;" th:text="#{admin.table.title}">Название</th>
+            <th style="width: 25%;" th:text="#{admin.table.actions}">Действия</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="workoutType : ${workoutTypes}">
+            <td th:text="${workoutType.id}">1</td>
+            <td th:text="${workoutType.title}">Йога</td>
+            <td>
+                <a th:href="@{/admin/workout-types/edit/{id}(id=${workoutType.id})}"
+                   class="btn btn-primary btn-sm"
+                   th:text="#{admin.btn.edit}">Изменить</a>
+
+                <button type="button"
+                        class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        th:data-url="@{/admin/workout-types/delete/{id}(id=${workoutType.id})}"
+                        th:text="#{admin.btn.delete}">
+                    Удалить
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item"
+                th:classappend="${currentPage == 1} ? ' disabled'">
+
+                <a class="page-link"
+                   th:text="#{pagination.previous}"
+                   th:href="@{/admin/workout-types(page=${currentPage - 1})}">
+                    Previous
+                </a>
+
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(1, totalPages)}"
+                th:classappend="${i == currentPage} ? ' active'">
+
+                <a class="page-link"
+                   th:text="${i}"
+                   th:href="@{/admin/workout-types(page=${i})}">
+                </a>
+
+            </li>
+
+            <li class="page-item"
+                th:classappend="${currentPage == totalPages} ? ' disabled'">
+
+                <a class="page-link"
+                   th:text="#{pagination.next}"
+                   th:href="@{/admin/workout-types(page=${currentPage + 1})}">
+                    Next
+                </a>
+
+            </li>
+
+        </ul>
+    </nav>
+
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel" th:text="#{admin.modal.title}">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body" th:text="#{admin.modal.body}">
+                Вы точно хотите удалить эту услугу? Данное действие нельзя отменить.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{admin.modal.btn-cancel}">Отмена</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger" th:text="#{admin.modal.btn-confirm}">Да, удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const deleteModal = document.getElementById('deleteModal');
+    if (deleteModal) {
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const deleteUrl = button.getAttribute('data-url');
+            const form = document.getElementById('deleteForm');
+            form.action = deleteUrl;
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
