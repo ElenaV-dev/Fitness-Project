@@ -91,6 +91,10 @@ src
 
 The application uses PostgreSQL as its relational database. Hibernate ORM and Jakarta Persistence (JPA) are used to map Java entities to database tables and perform persistence operations. Database connections are managed using HikariCP connection pool.
 
+### Database Schema
+
+<img src="docs/database-schema.png" alt="Database-schema" width="600">
+
 ## Security
 
 Spring Security is used to provide authentication and authorization.
@@ -167,6 +171,26 @@ target/fitness.war
 Copy fitness.war to the Tomcat webapps directory and start the Tomcat server. The application will then be available through the configured Tomcat port.
 
 ## Screenshots
+
+### Main page
+
+<img src="docs/main-page.png" alt="Main-page" width="600">
+
+### Login
+
+<img src="docs/login.png" alt="Login" width="300">
+
+### Admin page 
+
+<img src="docs/admin-page.png" alt="Admin page" width="600">
+
+### Admin page 
+
+<img src="docs/client-page.png" alt="Client page" width="600">
+
+### Purchasing a subscription 
+
+<img src="docs/subscription.png" alt="Subscription" width="600">
 
 ## Project Status
 
