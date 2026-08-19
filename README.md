@@ -1,55 +1,135 @@
-# Fitness
+# Fitness Center Management System
 
-Fitness is a web application for managing fitness center activities such as users, workout types, subscriptions, and training records.
+A web application for managing a fitness center, developed as an educational project to practice Java and modern Spring technologies. The application provides functionality for managing users and fitness-related information through a web interface. It uses Spring MVC for request processing, Hibernate/JPA for database interaction, Spring Security for authentication and authorization, and PostgreSQL as the database.
 
-The project is built with Spring MVC, Hibernate, and deployed as a WAR application on Apache Tomcat.
+## Features
 
----
+- User registration and authentication
+- User authorization using Spring Security
+- Secure password handling
+- Validation of user input
+- Management of fitness-related data
+- Interaction with PostgreSQL database through Hibernate/JPA
+- Server-side HTML rendering with Thymeleaf
+- Logging application events and errors with Log4j2
+- Unit and integration-oriented testing with JUnit and Mockito
 
-## Technologies
+## Tech stack
 
-- Java 24
-- Spring Core
-- Spring MVC
-- Spring Security
-- Hibernate ORM
-- PostgreSQL
-- Thymeleaf
+- **Java 24**
+- **Spring Core**
+- **Spring MVC**
+- **Spring Security**
+- **Spring AOP**
+- **Hibernate ORM**
+- **Jakarta Persistence (JPA)**
+- **Jakarta Validation**
+- **AspectJ**
+- **PostgreSQL**
+- **HikariCP**
+- **Thymeleaf**
+- **Log4j2**
+- **JUnit 5**
+- **Mockito**
+- **Spring Test**
+- **Maven**
+- **Apache Tomcat**
+
+## Architecture
+
+The application follows a layered architecture that separates responsibilities between different components. 
+
+The main layers are:
+
+- **Controller** — handles HTTP requests and prepares responses
+- **Service** — contains business logic
+- **DAO** — responsible for database operations
+- **Entity** — represents database entities
+- **Configuration** — application and security configuration
+- **Exception handling** — handles application errors
+- **Validation** — validates incoming data
+  
+This separation makes the application easier to maintain, test and extend.
+
+## Project Structure
+
+## Database
+
+The application uses PostgreSQL as its relational database. Hibernate ORM and Jakarta Persistence (JPA) are used to map Java entities to database tables and perform persistence operations. Database connections are managed using HikariCP connection pool.
+
+## Security
+
+Spring Security is used to provide authentication and authorization.
+
+The application includes:
+
+- user authentication
+- role-based authorization
+- protected endpoints
+- secure password storage
+
+## Validation
+
+User input is validated using Jakarta Validation and Hibernate Validator. Validation helps prevent invalid data from being passed to the application and database layers.
+
+## Logging
+
+Log4j2 is used for application logging. Logging is applied to important application events and helps with troubleshooting and monitoring application behavior.
+
+## Testing
+
+The project includes testing tools such as:
+
+- **JUnit 5** — testing framework
+- **Mockito** — mocking dependencies
+- **Spring Test** — testing Spring components
+
+Tests are used to verify application behavior and individual components.
+
+## How To Run
+
+### Prerequisites
+
+- JDK 24
 - Maven
-- HikariCP
-- Log4j2
+- PostgreSQL
+- Apache Tomcat 11
 
----
+### 1. Clone the repository
 
-## Requirements
+```bush
+git clone https://github.com/ElenaV-dev/Fitness-Project.git
+cd Fitness-Project
+```
 
-Before running the project, make sure you have installed:
+### 2. Configure PostgreSQL
 
-- Java 21+
-- Maven 3.9+
-- Apache Tomcat 10+
-- PostgreSQL 14+
+Create the required database and update the database connection settings.
 
----
+### 3. Build The Project
 
-## Run
+Run:
+```bush
+mvn clean package
+```
 
-1. Build project:
-   mvn clean package
+Maven will create the following WAR file:
 
-2. Copy WAR to Tomcat:
-   target/fitness.war → apache-tomcat/webapps/
+```bush
+target/fitness.war
+```
 
-3. Start Tomcat:
-   Windows
-   apache-tomcat/bin/startup.bat
+### 4. Deploy to Apache Tomcat
 
-   Linux/Mac
-   apache-tomcat/bin/startup.sh
+Copy fitness.war to the Tomcat webapps directory and start the Tomcat server. The application will then be available through the configured Tomcat port.
 
-4. Open in browser:
-   http://localhost:8080/fitness
+## Screenshots
 
-## Author
+## Project Status
 
-Elena
+The project was developed as an educational project to strengthen practical knowledge of Java web development and the Spring ecosystem.
+Possible future improvements include adding new fitness management features, improving the user interface, expanding test coverage and introducing additional API functionality.
+
+
+
+
