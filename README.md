@@ -53,6 +53,37 @@ This separation makes the application easier to maintain, test and extend.
 
 ## Project Structure
 
+```text
+src
+└── main
+|    ├── java
+|    │   └── com.fitness
+|    │       ├── aspect
+|    │       ├── config
+|    │       ├── constants
+|    │       ├── controller
+|    │       ├── dao
+|    │       ├── dto
+|    │       ├── exception
+|    │       ├── interceptor
+|    │       ├── mapper
+|    │       ├── model
+|    │       ├── security
+|    │       ├── service
+|    │       ├── strategy
+|    │       └── validator
+|    │
+|    ├── resources
+|    │
+|    └── webapp
+|        └── WEB-INF
+└── test
+     └── java
+         └── com.fitness
+             ├── dao
+             └── service
+```
+
 ## Database
 
 The application uses PostgreSQL as its relational database. Hibernate ORM and Jakarta Persistence (JPA) are used to map Java entities to database tables and perform persistence operations. Database connections are managed using HikariCP connection pool.
