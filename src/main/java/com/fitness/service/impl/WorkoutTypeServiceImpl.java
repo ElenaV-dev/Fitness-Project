@@ -81,11 +81,6 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
         return workoutTypeDao.findWorkoutTypesWithPeopleCount();
     }
 
-    private WorkoutType getWorkoutTypeById(Long id) {
-        return workoutTypeDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.WORKOUT_TYPE_NOT_FOUND_BY_ID + id));
-    }
-
     @Override
     public List<WorkoutTypeResponseDto> findPage(int page, int size) {
         List<WorkoutType> workoutTypes = workoutTypeDao.findPage(page, size);
@@ -95,5 +90,10 @@ public class WorkoutTypeServiceImpl implements WorkoutTypeService {
     @Override
     public long count() {
         return workoutTypeDao.count();
+    }
+
+    private WorkoutType getWorkoutTypeById(Long id) {
+        return workoutTypeDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.WORKOUT_TYPE_NOT_FOUND_BY_ID + id));
     }
 }
