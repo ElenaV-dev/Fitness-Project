@@ -93,7 +93,7 @@ The application uses PostgreSQL as its relational database. Hibernate ORM and Ja
 
 ### Database Schema
 
-<img src="docs/database-schema.png" alt="Database-schema" width="600">
+<img src="docs/database-schema.png" alt="Database schema" height="400">
 
 ## Security
 
