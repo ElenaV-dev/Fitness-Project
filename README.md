@@ -11,6 +11,7 @@ A web application for managing a fitness center, developed as an educational pro
 - Management of fitness-related data
 - Interaction with PostgreSQL database through Hibernate/JPA
 - Server-side HTML rendering with Thymeleaf
+- Internationalization with English and Russian language support
 - Logging application events and errors with Log4j2
 - Unit and integration-oriented testing with JUnit and Mockito
 
@@ -50,6 +51,8 @@ The main layers are:
 - **Validation** — validates incoming data
   
 This separation makes the application easier to maintain, test and extend.
+
+Implemented the Strategy design pattern to encapsulate subscription-specific business logic and provide flexible subscription type selection.
 
 ## Project Structure
 
@@ -106,6 +109,15 @@ User input is validated using Jakarta Validation and Hibernate Validator. Valida
 ## Logging
 
 Log4j2 is used for application logging. Logging is applied to important application events and helps with troubleshooting and monitoring application behavior.
+
+## Internationalization
+
+The application supports two languages:
+
+- English
+- Russian
+
+The user can switch between languages through the application interface.
 
 ## Testing
 
